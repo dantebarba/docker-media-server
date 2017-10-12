@@ -76,9 +76,9 @@ services:
   #     - "7878:7878"
   #   volumes:
   #     - "/etc/localtime:/etc/localtime:ro"
-  #     - "/Users/dantebarba/Dev/docker/radarr/config:/config"
-  #     - "/Users/dantebarba/Dev/docker/radarr/movies:/movies"
-  #     - "/Users/dantebarba/Dev/docker/qbittorrent/downloads:/downloads"
+  #     - "~/docker/radarr/config:/config"
+  #     - "~/docker/radarr/movies:/movies"
+  #     - "~/docker/qbittorrent/downloads:/downloads"
   #   depends_on:
   #     - qbittorrent
   #     - jackett
