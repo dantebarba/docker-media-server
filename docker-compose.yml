@@ -1,0 +1,85 @@
+version: '3'
+services:
+  qbittorrent:
+    image: "linuxserver/qbittorrent"
+    container_name: qbittorrent
+    hostname: qbittorrent
+    domainname: local
+    ports:
+      - "6881:6881"
+      - "6881:6881/udp"
+      - "8081:8081"
+    volumes:
+      - "~/docker/qbittorrent/config:/config"
+      - "~/docker/qbittorrent/downloads:/downloads"
+    environment:
+      - "UMASK_SET=022"
+      - "WEBUI_PORT=8081"
+  jackett:
+    image: "linuxserver/jackett"
+    container_name: jackett
+    hostname: jackett
+    domainname: local
+    volumes:
+      - "~/docker/jackett/config:/config"
+      - "~/docker/qbittorrent/downloads:/downloads"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - "9117:9117"
+  plex:
+    image: "plexinc/pms-docker"
+    container_name: plex
+    ports:
+      - "32400:32400/tcp"
+      - "3005:3005/tcp"
+      - "8324:8324/tcp"
+      - "32469:32469/tcp"
+      - "1900:1900/udp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+    environment:
+      - TZ="America/Argentina/Buenos_Aires"
+      - PLEX_CLAIM="claim-F4zaNoWZz7Q13DaYG2iX"
+      - ADVERTISE_IP="http://192.168.0.15:32400/"
+    hostname: "macosplex"
+    domainname: local
+    volumes:
+      - "~/docker/plex:/config"
+      - "~/docker/sonarr/tvseries:/tv"
+      - "~/docker/radarr/movies:/movies"
+      - "~/docker/plex:/transcode"
+  sonarr:
+    image: "linuxserver/sonarr"
+    container_name: sonarr
+    hostname: sonarr
+    domainname: local
+    ports:
+     - "8989:8989"
+    volumes:
+     - "/etc/localtime:/etc/localtime:ro"
+     - "~/docker/sonarr/config:/config"
+     - "~/docker/sonarr/tvseries:/tv"
+     - "~/docker/qbittorrent/downloads:/downloads"
+    depends_on:
+      - qbittorrent
+      - jackett
+      - plex
+
+  # radarr:
+  #   image: "linuxserver/radarr"
+  #   container_name: radarr
+  #   hostname: radarr
+  #   domainname: local
+  #   ports:
+  #     - "7878:7878"
+  #   volumes:
+  #     - "/etc/localtime:/etc/localtime:ro"
+  #     - "/Users/dantebarba/Dev/docker/radarr/config:/config"
+  #     - "/Users/dantebarba/Dev/docker/radarr/movies:/movies"
+  #     - "/Users/dantebarba/Dev/docker/qbittorrent/downloads:/downloads"
+  #   depends_on:
+  #     - qbittorrent
+  #     - jackett
+  #     - plex
