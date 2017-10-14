@@ -47,11 +47,10 @@ services:
     environment:
       - TZ="America/Argentina/Buenos_Aires"
       - PLEX_CLAIM="claim-F4zaNoWZz7Q13DaYG2iX"
-      - ADVERTISE_IP="http://192.168.0.15:32400/"
       - PUID=1000
       - PGID=1000
-    hostname: "macosplex"
-    domainname: local
+    hostname: "DantePlexMediaServer"
+    net: "host"
     volumes:
       - "~/docker/plex:/config"
       - "~/docker/sonarr/tvseries:/tv"
