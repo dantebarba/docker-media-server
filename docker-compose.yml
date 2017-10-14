@@ -50,7 +50,7 @@ services:
       - PUID=1000
       - PGID=1000
     hostname: "DantePlexMediaServer"
-    net: "host"
+    network_mode: "host"
     volumes:
       - "~/docker/plex:/config"
       - "~/docker/sonarr/tvseries:/tv"
