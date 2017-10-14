@@ -4,7 +4,6 @@ services:
     image: "linuxserver/qbittorrent"
     container_name: qbittorrent
     hostname: qbittorrent
-    domainname: local
     ports:
       - "6881:6881"
       - "6881:6881/udp"
@@ -21,7 +20,6 @@ services:
     image: "linuxserver/jackett"
     container_name: jackett
     hostname: jackett
-    domainname: local
     volumes:
       - "~/docker/jackett/config:/config"
       - "~/docker/qbittorrent/downloads:/downloads"
@@ -56,11 +54,11 @@ services:
       - "~/docker/sonarr/tvseries:/tv"
       - "~/docker/radarr/movies:/movies"
       - "~/docker/plex:/transcode"
+  
   sonarr:
     image: "linuxserver/sonarr"
     container_name: sonarr
     hostname: sonarr
-    domainname: local
     ports:
      - "8989:8989"
     volumes:
@@ -76,19 +74,21 @@ services:
       - jackett
       - plex
 
-  # radarr:
-  #   image: "linuxserver/radarr"
-  #   container_name: radarr
-  #   hostname: radarr
-  #   domainname: local
-  #   ports:
-  #     - "7878:7878"
-  #   volumes:
-  #     - "/etc/localtime:/etc/localtime:ro"
-  #     - "~/docker/radarr/config:/config"
-  #     - "~/docker/radarr/movies:/movies"
-  #     - "~/docker/qbittorrent/downloads:/downloads"
-  #   depends_on:
-  #     - qbittorrent
-  #     - jackett
-  #     - plex
+  radarr:
+    image: "linuxserver/radarr"
+    container_name: radarr
+    hostname: radarr
+    ports:
+      - "7878:7878"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "~/docker/radarr/config:/config"
+      - "~/docker/radarr/movies:/movies"
+      - "~/docker/qbittorrent/downloads:/downloads"
+    environment:
+     - PUID=1000
+     - PGID=1000
+    depends_on:
+      - qbittorrent
+      - jackett
+      - plex
