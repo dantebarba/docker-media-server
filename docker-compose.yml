@@ -1,25 +1,28 @@
 version: '3'
 services:
-  deluge:
-    image: "linuxserver/deluge"
-    container_name: deluge
-    hostname: deluge
+  transmission:
+    image: "linuxserver/transmission"
+    container_name: transmission
+    hostname: transmission
     volumes:
-      - "~/docker/deluge/config:/config"
-      - "~/docker/deluge/downloads:/downloads"
+      - "~/docker/transmission/config:/config"
+      - "~/docker/transmission/downloads:/downloads"
+      - "~/docker/transmission/watch:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=1000
       - PGID=1000
-      - UMASK_SET=022
-    network_mode: "host"
+    ports:
+      - "9091:9091"
+      - "51413:51413"
+      - "51413:51413/udp"
   jackett:
     image: "linuxserver/jackett"
     container_name: jackett
     hostname: jackett
     volumes:
       - "~/docker/jackett/config:/config"
-      - "~/docker/deluge/downloads:/downloads"
+      - "~/docker/transmission/downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=1000
@@ -62,12 +65,12 @@ services:
      - "/etc/localtime:/etc/localtime:ro"
      - "~/docker/sonarr/config:/config"
      - "~/docker/sonarr/tvseries:/tv"
-     - "~/docker/deluge/downloads:/downloads"
+     - "~/docker/transmission/downloads:/downloads"
     environment:
      - PUID=1000
      - PGID=1000
     depends_on:
-      - deluge
+      - transmission
       - jackett
       - plex
 
@@ -81,11 +84,11 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "~/docker/radarr/config:/config"
       - "~/docker/radarr/movies:/movies"
-      - "~/docker/deluge/downloads:/downloads"
+      - "~/docker/transmission/downloads:/downloads"
     environment:
      - PUID=1000
      - PGID=1000
     depends_on:
-      - deluge
+      - transmission
       - jackett
       - plex
