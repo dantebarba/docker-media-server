@@ -1,12 +1,12 @@
 version: '3'
 services:
-  delugue:
-    image: "linuxserver/delugue"
-    container_name: delugue
-    hostname: delugue
+  deluge:
+    image: "linuxserver/deluge"
+    container_name: deluge
+    hostname: deluge
     volumes:
-      - "~/docker/delugue/config:/config"
-      - "~/docker/delugue/downloads:/downloads"
+      - "~/docker/deluge/config:/config"
+      - "~/docker/deluge/downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=1000
@@ -24,7 +24,7 @@ services:
     hostname: jackett
     volumes:
       - "~/docker/jackett/config:/config"
-      - "~/docker/delugue/downloads:/downloads"
+      - "~/docker/deluge/downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=1000
@@ -67,12 +67,12 @@ services:
      - "/etc/localtime:/etc/localtime:ro"
      - "~/docker/sonarr/config:/config"
      - "~/docker/sonarr/tvseries:/tv"
-     - "~/docker/delugue/downloads:/downloads"
+     - "~/docker/deluge/downloads:/downloads"
     environment:
      - PUID=1000
      - PGID=1000
     depends_on:
-      - delugue
+      - deluge
       - jackett
       - plex
 
@@ -86,11 +86,11 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "~/docker/radarr/config:/config"
       - "~/docker/radarr/movies:/movies"
-      - "~/docker/delugue/downloads:/downloads"
+      - "~/docker/deluge/downloads:/downloads"
     environment:
      - PUID=1000
      - PGID=1000
     depends_on:
-      - delugue
+      - deluge
       - jackett
       - plex
