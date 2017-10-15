@@ -1,28 +1,30 @@
 version: '3'
 services:
-  rutorrent:
-    image: "linuxserver/rutorrent"
-    container_name: rutorrent
-    hostname: rutorrent
+  delugue:
+    image: "linuxserver/delugue"
+    container_name: delugue
+    hostname: delugue
     volumes:
-      - "~/docker/rutorrent/config:/config"
-      - "~/docker/rutorrent/downloads:/downloads"
+      - "~/docker/delugue/config:/config"
+      - "~/docker/delugue/downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=1000
       - PGID=1000
+      - UMASK_SET=022
     ports:
       - "80:80"
       - "6881:6881/udp"
       - "5000:5000"
       - "51413:51413"
+    network_mode: "host"
   jackett:
     image: "linuxserver/jackett"
     container_name: jackett
     hostname: jackett
     volumes:
       - "~/docker/jackett/config:/config"
-      - "~/docker/rutorrent/downloads:/downloads"
+      - "~/docker/delugue/downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=1000
@@ -65,12 +67,12 @@ services:
      - "/etc/localtime:/etc/localtime:ro"
      - "~/docker/sonarr/config:/config"
      - "~/docker/sonarr/tvseries:/tv"
-     - "~/docker/rutorrent/downloads:/downloads"
+     - "~/docker/delugue/downloads:/downloads"
     environment:
      - PUID=1000
      - PGID=1000
     depends_on:
-      - rutorrent
+      - delugue
       - jackett
       - plex
 
@@ -84,11 +86,11 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "~/docker/radarr/config:/config"
       - "~/docker/radarr/movies:/movies"
-      - "~/docker/rutorrent/downloads:/downloads"
+      - "~/docker/delugue/downloads:/downloads"
     environment:
      - PUID=1000
      - PGID=1000
     depends_on:
-      - rutorrent
+      - delugue
       - jackett
       - plex
