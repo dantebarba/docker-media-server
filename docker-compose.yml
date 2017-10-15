@@ -12,11 +12,6 @@ services:
       - PUID=1000
       - PGID=1000
       - UMASK_SET=022
-    ports:
-      - "80:80"
-      - "6881:6881/udp"
-      - "5000:5000"
-      - "51413:51413"
     network_mode: "host"
   jackett:
     image: "linuxserver/jackett"
