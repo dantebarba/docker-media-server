@@ -22,7 +22,7 @@ services:
     hostname: jackett
     volumes:
       - "~/docker/jackett/config:/config"
-      - "~/docker/qbittorrent/downloads:/downloads"
+      - "~/docker/rutorrent/downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=1000
@@ -65,12 +65,12 @@ services:
      - "/etc/localtime:/etc/localtime:ro"
      - "~/docker/sonarr/config:/config"
      - "~/docker/sonarr/tvseries:/tv"
-     - "~/docker/qbittorrent/downloads:/downloads"
+     - "~/docker/rutorrent/downloads:/downloads"
     environment:
      - PUID=1000
      - PGID=1000
     depends_on:
-      - qbittorrent
+      - rutorrent
       - jackett
       - plex
 
@@ -84,11 +84,11 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "~/docker/radarr/config:/config"
       - "~/docker/radarr/movies:/movies"
-      - "~/docker/qbittorrent/downloads:/downloads"
+      - "~/docker/rutorrent/downloads:/downloads"
     environment:
      - PUID=1000
      - PGID=1000
     depends_on:
-      - qbittorrent
+      - rutorrent
       - jackett
       - plex
