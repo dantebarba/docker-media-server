@@ -1,21 +1,21 @@
 version: '3'
 services:
-  qbittorrent:
-    image: "linuxserver/qbittorrent"
-    container_name: qbittorrent
-    hostname: qbittorrent
-    ports:
-      - "6881:6881"
-      - "6881:6881/udp"
-      - "8081:8081"
+  rutorrent:
+    image: "linuxserver/rutorrent"
+    container_name: rutorrent
+    hostname: rutorrent
     volumes:
-      - "~/docker/qbittorrent/config:/config"
-      - "~/docker/qbittorrent/downloads:/downloads"
+      - "~/docker/rutorrent/config:/config"
+      - "~/docker/rutorrent/downloads:/downloads"
+      - "/etc/localtime:/etc/localtime:ro"
     environment:
-      - "UMASK_SET=022"
-      - "WEBUI_PORT=8081"
       - PUID=1000
       - PGID=1000
+    ports:
+      - "80:80"
+      - "6881:6881/udp"
+      - "5000:5000"
+      - "51413:51413"
   jackett:
     image: "linuxserver/jackett"
     container_name: jackett
@@ -54,7 +54,7 @@ services:
       - "~/docker/sonarr/tvseries:/tv"
       - "~/docker/radarr/movies:/movies"
       - "~/docker/plex:/transcode"
-  
+
   sonarr:
     image: "linuxserver/sonarr"
     container_name: sonarr
