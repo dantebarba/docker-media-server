@@ -9,6 +9,13 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
       - DEFAULT_HOST=danteplexmediaserver.tk
+    depends_on:
+      - transmission
+      - sonarr
+      - jackett
+      - radarr
+      - plex
+
   transmission:
     image: "linuxserver/transmission"
     container_name: transmission
@@ -26,6 +33,7 @@ services:
       - "9091:9091"
       - "51413:51413"
       - "51413:51413/udp"
+
   jackett:
     image: "linuxserver/jackett"
     container_name: jackett
