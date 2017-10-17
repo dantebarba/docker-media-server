@@ -70,7 +70,6 @@ services:
       - PGID=1000
       - VIRTUAL_HOST=plex.danteplexmediaserver.tk
     hostname: "DantePlexMediaServer"
-    network_mode: "host"
     volumes:
       - "~/docker/plex:/config"
       - "~/docker/sonarr/tvseries:/tv"
