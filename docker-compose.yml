@@ -10,6 +10,9 @@ services:
       - /sys:/host/sys:ro
     cap_add:
       - SYS_PTRACE
+    environment:
+      - VIRTUAL_HOST=stats.danteplexmediaserver.tk
+
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
