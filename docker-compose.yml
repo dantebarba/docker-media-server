@@ -29,6 +29,7 @@ services:
       - PUID=1000
       - PGID=1000
       - VIRTUAL_HOST=transmission.danteplexmediaserver.tk
+      - VIRTUAL_PORT=9091
     ports:
       - "9091:9091"
       - "51413:51413"
@@ -61,14 +62,13 @@ services:
       - "32412:32412/udp"
       - "32413:32413/udp"
       - "32414:32414/udp"
-    expose:
-      - "32400"
     environment:
       - TZ="America/Argentina/Buenos_Aires"
       - PLEX_CLAIM="claim-hqSS1q3ss7yH4z1xnSaQ"
       - PUID=1000
       - PGID=1000
       - VIRTUAL_HOST=plex.danteplexmediaserver.tk
+      - VIRTUAL_PORT=32400
     hostname: "DantePlexMediaServer"
     volumes:
       - "~/docker/plex:/config"
