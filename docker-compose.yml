@@ -21,7 +21,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - VIRTUAL_HOST="transmission.danteplexmediaserver.tk"
+      - VIRTUAL_HOST=transmission.danteplexmediaserver.tk
     ports:
       - "9091:9091"
       - "51413:51413"
@@ -39,7 +39,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - VIRTUAL_HOST="jackett.danteplexmediaserver.tk"
+      - VIRTUAL_HOST=jackett.danteplexmediaserver.tk
     ports:
       - "9117:9117"
   plex:
@@ -60,7 +60,7 @@ services:
       - PLEX_CLAIM="claim-hqSS1q3ss7yH4z1xnSaQ"
       - PUID=1000
       - PGID=1000
-      - VIRTUAL_HOST="plex.danteplexmediaserver.tk"
+      - VIRTUAL_HOST=plex.danteplexmediaserver.tk
     hostname: "DantePlexMediaServer"
     network_mode: "host"
     volumes:
@@ -83,7 +83,7 @@ services:
     environment:
      - PUID=1000
      - PGID=1000
-     - VIRTUAL_HOST="sonarr.danteplexmediaserver.tk"
+     - VIRTUAL_HOST=sonarr.danteplexmediaserver.tk
     depends_on:
       - transmission
       - jackett
