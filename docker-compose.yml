@@ -1,17 +1,17 @@
 version: '3'
 services:
-  netdata:
-    image: titpetric/netdata
-    container_name: netdata
-    ports:
-      - "19999:19999"
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-    cap_add:
-      - SYS_PTRACE
-    environment:
-      - VIRTUAL_HOST=stats.danteplexmediaserver.tk
+#  netdata:
+#    image: titpetric/netdata
+#    container_name: netdata
+#    ports:
+#      - "19999:19999"
+#    volumes:
+#      - /proc:/host/proc:ro
+#      - /sys:/host/sys:ro
+#    cap_add:
+#      - SYS_PTRACE
+#    environment:
+#      - VIRTUAL_HOST=stats.danteplexmediaserver.tk
 
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -123,7 +123,8 @@ services:
     environment:
      - PUID=1000
      - PGID=1000
-    depends_on:
+     - VIRTUAL_HOST=radarr.danteplexmediaserver.tk 
+   depends_on:
       - transmission
       - jackett
       - plex
