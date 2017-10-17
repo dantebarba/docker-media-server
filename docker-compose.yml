@@ -1,5 +1,15 @@
 version: '3'
 services:
+  netdata:
+    image: titpetric/netdata
+    container_name: netdata
+    ports:
+      - "19999:19999"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    cap_add:
+      - SYS_PTRACE
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
