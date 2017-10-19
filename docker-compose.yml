@@ -11,7 +11,7 @@ services:
     cap_add:
       - SYS_PTRACE
     environment:
-      - VIRTUAL_HOST=stats.danteplexmediaserver.tk
+      - VIRTUAL_HOST=stats.${DOMAIN_URL}
 
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -21,7 +21,7 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
-      - DEFAULT_HOST=danteplexmediaserver.tk
+      - DEFAULT_HOST=${DOMAIN_URL}
     depends_on:
       - transmission
       - sonarr
@@ -41,7 +41,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - VIRTUAL_HOST=transmission.danteplexmediaserver.tk
+      - VIRTUAL_HOST=transmission.${DOMAIN_URL}
       - VIRTUAL_PORT=9091
     ports:
       - "9091:9091"
@@ -59,7 +59,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - VIRTUAL_HOST=jackett.danteplexmediaserver.tk
+      - VIRTUAL_HOST=jackett.${DOMAIN_URL}
     ports:
       - "9117:9117"
   plex:
@@ -77,10 +77,10 @@ services:
       - "32414:32414/udp"
     environment:
       - TZ="America/Argentina/Buenos_Aires"
-      - PLEX_CLAIM="claim-hqSS1q3ss7yH4z1xnSaQ"
+      - PLEX_CLAIM=${PLEX_CLAIM}
       - PUID=1000
       - PGID=1000
-      - VIRTUAL_HOST=plex.danteplexmediaserver.tk
+      - VIRTUAL_HOST=plex.${DOMAIN_URL}
       - VIRTUAL_PORT=32400
     hostname: "DantePlexMediaServer"
     volumes:
@@ -103,7 +103,7 @@ services:
     environment:
      - PUID=1000
      - PGID=1000
-     - VIRTUAL_HOST=sonarr.danteplexmediaserver.tk
+     - VIRTUAL_HOST=sonarr.${DOMAIN_URL}
     depends_on:
       - transmission
       - jackett
@@ -123,6 +123,7 @@ services:
     environment:
      - PUID=1000
      - PGID=1000
+     - VIRTUAL_HOST=sonarr.${DOMAIN_URL}
     depends_on:
       - transmission
       - jackett
