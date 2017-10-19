@@ -1,5 +1,5 @@
 # docker-media-server
-compose and other 'yerbs' for home configuration of dockerized media server.
+compose and other things for home configuration of dockerized media server.
 
 ## Installation:
 - Create environmet varibles file (variables.env) or define DOMAIN_URL and PLEX_CLAIM environmet variables in your system. (https://docs.docker.com/compose/env-file/)
