@@ -82,7 +82,7 @@ services:
       - PGID=${PGID}
       - VIRTUAL_HOST=plex.${DOMAIN_URL}
       - VIRTUAL_PORT=32400
-    hostname: "DantePlexMediaServer"
+    hostname: ${PLEX_HOSTNAME}
     volumes:
       - "~/docker/plex:/config"
       - "~/docker/sonarr/tvseries:/tv"
