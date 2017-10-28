@@ -129,8 +129,7 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=radarr.${DOMAIN_URL}
-    labels:
-      - "traefik.domain=radarr.${DOMAIN_URL}"
+
     depends_on:
       - transmission
       - jackett
@@ -139,6 +138,8 @@ services:
       resources:
         limits:
           cpus: '0.5'
+      labels:
+        - "traefik.domain=radarr.${DOMAIN_URL}"
 
 configs:
   transmission_settings:
