@@ -47,6 +47,9 @@ services:
       - "9091:9091"
       - "51413:51413"
       - "51413:51413/udp"
+    configs:
+      - source: transmission/settings.json
+        target: ~/docker/transmission/config
 
   jackett:
     image: "linuxserver/jackett"
