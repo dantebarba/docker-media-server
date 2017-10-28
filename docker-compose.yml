@@ -134,12 +134,11 @@ services:
       - transmission
       - jackett
       - plex
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-      labels:
-        - "traefik.domain=radarr.${DOMAIN_URL}"
+    resources:
+      limits:
+        cpus: '0.5'
+    labels:
+      - traefik.domain=radarr.${DOMAIN_URL}
 
 configs:
   transmission_settings:
