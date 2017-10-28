@@ -1,0 +1,60 @@
+################################################################
+# Docker Swarmmode configuration backend
+################################################################
+
+# Enable Docker configuration backend.
+[docker]
+
+# Docker server endpoint.
+# Can be a tcp or a unix socket endpoint.
+#
+# Required
+# Default: "unix:///var/run/docker.sock"
+#
+# endpoint = "tcp://127.0.0.1:2375"
+
+# Default domain used.
+# Can be overridden by setting the "traefik.domain" label on a services.
+#
+# Optional
+# Default: ""
+#
+domain = "danteplexmediaserver.ml"
+
+# Enable watch docker changes.
+#
+# Optional
+# Default: true
+#
+watch = true
+
+# Use Docker Swarm Mode as data provider.
+#
+# Optional
+# Default: false
+#
+swarmmode = true
+
+# Override default configuration template.
+# For advanced users :)
+#
+# Optional
+#
+# filename = "docker.tmpl"
+
+# Expose services by default in Traefik.
+#
+# Optional
+# Default: true
+#
+# exposedbydefault = true
+
+# Enable docker TLS connection.
+#
+# Optional
+#
+#  [docker.tls]
+#  ca = "/etc/ssl/ca.crt"
+#  cert = "/etc/ssl/docker.crt"
+#  key = "/etc/ssl/docker.key"
+#  insecureskipverify = true
