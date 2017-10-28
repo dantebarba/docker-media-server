@@ -48,8 +48,8 @@ services:
       - "51413:51413"
       - "51413:51413/udp"
     configs:
-      - source: transmission/settings.json
-        target: ~/docker/transmission/config
+      - source: transmission_settings
+        target: /config
 
   jackett:
     image: "linuxserver/jackett"
@@ -131,3 +131,7 @@ services:
       - transmission
       - jackett
       - plex
+
+configs:
+  transmission_settings:
+    file: transmission/settings.json
