@@ -131,6 +131,10 @@ services:
       - transmission
       - jackett
       - plex
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
 
 configs:
   transmission_settings:
