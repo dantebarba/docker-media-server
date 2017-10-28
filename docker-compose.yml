@@ -18,8 +18,10 @@ services:
     container_name: reverse-proxy
     ports:
       - "80:80"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - $PWD/traefik.toml:/etc/traefik/traefik.toml
     environment:
       - DEFAULT_HOST=${DOMAIN_URL}
     depends_on:
