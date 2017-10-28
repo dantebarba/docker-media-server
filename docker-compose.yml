@@ -14,14 +14,13 @@ services:
       - VIRTUAL_HOST=stats.${DOMAIN_URL}
 
   reverse-proxy:
-    image: jwilder/nginx-proxy
+    image: traefik
     container_name: reverse-proxy
     ports:
       - "80:80"
       - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - $PWD/traefik.toml:/etc/traefik/traefik.toml
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
       - DEFAULT_HOST=${DOMAIN_URL}
     depends_on:
