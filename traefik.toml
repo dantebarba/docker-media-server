@@ -11,7 +11,7 @@
 # Required
 # Default: "unix:///var/run/docker.sock"
 #
-endpoint = "/tmp/docker.sock:ro"
+endpoint = "/var/run/docker.sock"
 
 # Default domain used.
 # Can be overridden by setting the "traefik.domain" label on a services.
