@@ -14,7 +14,7 @@ services:
       - VIRTUAL_HOST=stats.${DOMAIN_URL}
 
   reverse-proxy:
-    image: jwilder/nginx-proxy
+    image: traefik
     container_name: reverse-proxy
     ports:
       - "80:80"
