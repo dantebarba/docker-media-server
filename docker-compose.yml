@@ -18,8 +18,6 @@ services:
     container_name: reverse-proxy
     ports:
       - "80:80"
-    networks:
-      - webgateway
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
@@ -143,7 +141,3 @@ services:
 configs:
   transmission_settings:
     file: transmission/settings.json
-
-networks:
-  webgateway:
-    driver: bridge
