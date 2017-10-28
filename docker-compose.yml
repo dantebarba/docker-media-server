@@ -20,7 +20,7 @@ services:
       - "80:80"
       - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
       - $PWD/traefik.toml:/etc/traefik/traefik.toml
     environment:
       - DEFAULT_HOST=${DOMAIN_URL}
