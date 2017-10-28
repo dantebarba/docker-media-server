@@ -134,9 +134,8 @@ services:
       - transmission
       - jackett
       - plex
-    resources:
-      limits:
-        cpus: '0.5'
+    limits:
+      cpus: '0.5'
     labels:
       - traefik.domain=radarr.${DOMAIN_URL}
 
