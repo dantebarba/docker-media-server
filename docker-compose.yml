@@ -13,11 +13,13 @@ services:
     environment:
       - VIRTUAL_HOST=stats.${DOMAIN_URL}
 
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
+  reverse-proxy:
+    image: traefik
+    container_name: reverse-proxy
     ports:
       - "80:80"
+    networks:
+      - webgateway
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
@@ -127,6 +129,8 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=radarr.${DOMAIN_URL}
+    labels:
+      - "traefik.domain=radarr.${DOMAIN_URL}"
     depends_on:
       - transmission
       - jackett
@@ -139,3 +143,7 @@ services:
 configs:
   transmission_settings:
     file: transmission/settings.json
+
+networks:
+  webgateway:
+    driver: bridge
