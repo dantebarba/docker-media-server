@@ -14,7 +14,7 @@ services:
       - VIRTUAL_HOST=stats.${DOMAIN_URL}
 
   reverse-proxy:
-    image: traefik
+    image: jwilder/nginx-proxy
     container_name: reverse-proxy
     ports:
       - "80:80"
@@ -49,9 +49,6 @@ services:
       - "9091:9091"
       - "51413:51413"
       - "51413:51413/udp"
-    configs:
-      - source: transmission_settings
-        target: /config
 
   jackett:
     image: "linuxserver/jackett"
@@ -134,10 +131,3 @@ services:
       - transmission
       - jackett
       - plex
-      
-    labels:
-      - traefik.domain=radarr.${DOMAIN_URL}
-
-configs:
-  transmission_settings:
-    file: transmission/settings.json
