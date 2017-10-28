@@ -1,12 +1,5 @@
 version: '3.3'
 services:
-  subliminal:
-    image: diaoulael/subliminal
-    container_name: subliminal
-    volumes:
-      - "~/docker/subliminal/cache:/usr/src/cache"
-      - "~/docker/radarr/movies:/movies"
-      - "~/docker/sonarr/tvseries:/tv"
   netdata:
     image: titpetric/netdata
     container_name: netdata
