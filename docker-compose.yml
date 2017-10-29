@@ -11,18 +11,18 @@ services:
       - radarr
       - plex
 
-  netdata:
-    image: titpetric/netdata
-    container_name: netdata
-    ports:
-      - "19999:19999"
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-    cap_add:
-      - SYS_PTRACE
-    environment:
-      - VIRTUAL_HOST=stats.${DOMAIN_URL}
+  # netdata:
+  #   image: titpetric/netdata
+  #   container_name: netdata
+  #   ports:
+  #     - "19999:19999"
+  #   volumes:
+  #     - /proc:/host/proc:ro
+  #     - /sys:/host/sys:ro
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   environment:
+  #     - VIRTUAL_HOST=stats.${DOMAIN_URL}
 
   reverse-proxy:
     image: jwilder/nginx-proxy
