@@ -6,6 +6,10 @@ services:
     volumes:
       - ~/docker/radarr/movies:/movies
       - ~/docker/sonarr/tvseries:/tv
+    depends_on:
+      - sonarr
+      - radarr
+      - plex
 
   netdata:
     image: titpetric/netdata
