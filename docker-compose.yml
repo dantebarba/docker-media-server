@@ -1,5 +1,12 @@
 version: '3.3'
 services:
+  epg:
+    image: janwer/webgrab
+    container_name: webgrab
+    volumes:
+      - ~/docker/epg/config
+    
+
   subtitles-daemon:
     image: dantebarba/subliminal-daemon
     container_name: subtitles-daemon
