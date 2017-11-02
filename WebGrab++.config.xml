@@ -79,7 +79,7 @@ The timespan for which shows will be grabbed.
 It takes one or two values separated by a comma or a space. The first is the number of days (including today) to download, note that 0 is today. The second (optional) is a time specified between 0:00 and 24:00 which will reduce the download to only the one show (per day) which is scheduled around the specified time. Any value between start time (including) and stop time will do
 This -one-show-only mode is helpfull if a SiteIni file needs to be debugged
 -->
-  <timespan>13</timespan>
+  <timespan>0</timespan>
 
   <!-- update mode
 i or incremental     only updates of changes , gabs, repairs and new shows
