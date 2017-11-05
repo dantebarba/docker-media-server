@@ -1,11 +1,11 @@
 version: '3.3'
 services:
-  epg:
-    image: janwer/webgrab
-    container_name: webgrab
-    volumes:
-      - ~/docker/epg/config:/config
-      - ~/docker/epg/data:/data
+  # epg:
+  #   image: janwer/webgrab
+  #   container_name: webgrab
+  #   volumes:
+  #     - ~/docker/epg/config:/config
+  #     - ~/docker/epg/data:/data
 
 
   subtitles-daemon:
