@@ -8,16 +8,16 @@ services:
   #     - ~/docker/epg/data:/data
 
 
-  subtitles-daemon:
-    image: dantebarba/subliminal-daemon
-    container_name: subtitles-daemon
-    volumes:
-      - ~/docker/radarr/movies:/movies
-      - ~/docker/sonarr/tvseries:/tv
-    depends_on:
-      - sonarr
-      - radarr
-      - plex
+  # subtitles-daemon:
+  #   image: dantebarba/subliminal-daemon
+  #   container_name: subtitles-daemon
+  #   volumes:
+  #     - ~/docker/radarr/movies:/movies
+  #     - ~/docker/sonarr/tvseries:/tv
+  #   depends_on:
+  #     - sonarr
+  #     - radarr
+  #     - plex
 
   # netdata:
   #   image: titpetric/netdata
