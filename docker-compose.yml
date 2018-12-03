@@ -1,36 +1,5 @@
 version: '3.3'
 services:
-  # epg:
-  #   image: janwer/webgrab
-  #   container_name: webgrab
-  #   volumes:
-  #     - ~/docker/epg/config:/config
-  #     - ~/docker/epg/data:/data
-
-
-  # subtitles-daemon:
-  #   image: dantebarba/subliminal-daemon
-  #   container_name: subtitles-daemon
-  #   volumes:
-  #     - ~/docker/radarr/movies:/movies
-  #     - ~/docker/sonarr/tvseries:/tv
-  #   depends_on:
-  #     - sonarr
-  #     - radarr
-  #     - plex
-
-  # netdata:
-  #   image: titpetric/netdata
-  #   container_name: netdata
-  #   ports:
-  #     - "19999:19999"
-  #   volumes:
-  #     - /proc:/host/proc:ro
-  #     - /sys:/host/sys:ro
-  #   cap_add:
-  #     - SYS_PTRACE
-  #   environment:
-  #     - VIRTUAL_HOST=stats.${DOMAIN_URL}
 
   reverse-proxy:
     image: jwilder/nginx-proxy
@@ -107,6 +76,7 @@ services:
       - "~/docker/plex:/config"
       - "~/docker/sonarr/tvseries:/tv"
       - "~/docker/radarr/movies:/movies"
+      - "~/docker/lidarr/music:/music"
       - "~/docker/plex:/transcode"
 
   sonarr:
@@ -129,6 +99,26 @@ services:
       - jackett
       - plex
 
+  lidarr:
+    image: "linuxserver/lidarr"
+    container_name: lidarr
+    hostname: lidarr
+    ports:
+      - "8686:8686"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "~/docker/lidarr/config:/config"
+      - "~/docker/lidarr/music:/music"
+      - "~/docker/transmission/downloads:/downloads"
+    environment:
+     - PUID=${PUID}
+     - PGID=${PGID}
+     - VIRTUAL_HOST=lidarr.${DOMAIN_URL}
+    depends_on:
+      - transmission
+      - jackett
+      - plex
+  
   radarr:
     image: "linuxserver/radarr"
     container_name: radarr
