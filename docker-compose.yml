@@ -23,9 +23,9 @@ services:
     container_name: transmission
     hostname: transmission
     volumes:
-      - "~/docker/transmission/config:/config"
-      - "~/docker/transmission/downloads:/downloads"
-      - "~/docker/transmission/watch:/watch"
+      - "${STORAGE_LOCATION}/transmission/config:/config"
+      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
+      - "${STORAGE_LOCATION}/transmission/watch:/watch"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=${PUID}
@@ -42,8 +42,8 @@ services:
     container_name: jackett
     hostname: jackett
     volumes:
-      - "~/docker/jackett/config:/config"
-      - "~/docker/transmission/downloads:/downloads"
+      - "${STORAGE_LOCATION}/jackett/config:/config"
+      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=${PUID}
@@ -73,11 +73,11 @@ services:
       - VIRTUAL_PORT=32400
     hostname: ${PLEX_HOSTNAME}
     volumes:
-      - "~/docker/plex:/config"
-      - "~/docker/sonarr/tvseries:/tv"
-      - "~/docker/radarr/movies:/movies"
-      - "~/docker/lidarr/music:/music"
-      - "~/docker/plex:/transcode"
+      - "${STORAGE_LOCATION}/plex:/config"
+      - "${STORAGE_LOCATION}/sonarr/tvseries:/tv"
+      - "${STORAGE_LOCATION}/radarr/movies:/movies"
+      - "${STORAGE_LOCATION}/lidarr/music:/music"
+      - "${STORAGE_LOCATION}/plex:/transcode"
 
   sonarr:
     image: "linuxserver/sonarr"
@@ -87,9 +87,9 @@ services:
      - "8989:8989"
     volumes:
      - "/etc/localtime:/etc/localtime:ro"
-     - "~/docker/sonarr/config:/config"
-     - "~/docker/sonarr/tvseries:/tv"
-     - "~/docker/transmission/downloads:/downloads"
+     - "${STORAGE_LOCATION}/sonarr/config:/config"
+     - "${STORAGE_LOCATION}/sonarr/tvseries:/tv"
+     - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
@@ -107,9 +107,9 @@ services:
       - "8686:8686"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "~/docker/lidarr/config:/config"
-      - "~/docker/lidarr/music:/music"
-      - "~/docker/transmission/downloads:/downloads"
+      - "${STORAGE_LOCATION}/lidarr/config:/config"
+      - "${STORAGE_LOCATION}/lidarr/music:/music"
+      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
@@ -127,9 +127,9 @@ services:
       - "7878:7878"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "~/docker/radarr/config:/config"
-      - "~/docker/radarr/movies:/movies"
-      - "~/docker/transmission/downloads:/downloads"
+      - "${STORAGE_LOCATION}/radarr/config:/config"
+      - "${STORAGE_LOCATION}/radarr/movies:/movies"
+      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
