@@ -14,9 +14,18 @@ compose and other things for home configuration of dockerized media server.
 - Create two env variables on your system with:
 
 `PUID=1000`
-`GUID=1000`
+`PGID=1000`
 
-- Create environmet varibles file (variables.env) or define DOMAIN_URL, PLEX_CLAIM, GUID and PUID environmet variables in your system. (https://docs.docker.com/compose/env-file/)
+- Create environmet varibles file (variables.env) or define DOMAIN_URL, STORAGE_LOCATION, PLEX_CLAIM, PLEX_HOSTNAME, PGID and PUID environmet variables in your system. (https://docs.docker.com/compose/env-file/)
+
+Examples:
+
+DOMAIN_URL=mydomain.com
+STORAGE_LOCATION=/home/storage
+PLEX_CLAIM="plex-provided-claim-hash"
+PLEX_HOSTNAME=MyHousePlex
+PGID=1000
+PUID=1000
 
 - Change directory to your docker-compose path and execute docker-compose up -d . Wait for initialization.
 
