@@ -20,12 +20,14 @@ compose and other things for home configuration of dockerized media server.
 
 Examples:
 
+```bash
 DOMAIN_URL=mydomain.com
 STORAGE_LOCATION=/home/storage
 PLEX_CLAIM="plex-provided-claim-hash"
 PLEX_HOSTNAME=MyHousePlex
 PGID=1000
 PUID=1000
+```
 
 - Change directory to your docker-compose path and execute docker-compose up -d . Wait for initialization.
 
