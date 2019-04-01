@@ -98,26 +98,6 @@ services:
       - transmission
       - jackett
       - plex
-
-  lidarr:
-    image: "linuxserver/lidarr"
-    container_name: lidarr
-    hostname: lidarr
-    ports:
-      - "8686:8686"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "${STORAGE_LOCATION}/lidarr/config:/config"
-      - "${STORAGE_LOCATION}/lidarr/music:/music"
-      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
-    environment:
-     - PUID=${PUID}
-     - PGID=${PGID}
-     - VIRTUAL_HOST=lidarr.${DOMAIN_URL}
-    depends_on:
-      - transmission
-      - jackett
-      - plex
   
   radarr:
     image: "linuxserver/radarr"
