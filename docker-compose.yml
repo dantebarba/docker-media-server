@@ -1,6 +1,5 @@
 version: '3.3'
 services:
-
   reverse-proxy:
     image: jwilder/nginx-proxy
     container_name: reverse-proxy
@@ -114,7 +113,6 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=radarr.${DOMAIN_URL}
-
     depends_on:
       - transmission
       - jackett
