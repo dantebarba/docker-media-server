@@ -10,12 +10,6 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
       - DEFAULT_HOST=${DOMAIN_URL}
-    depends_on:
-      - transmission
-      - sonarr
-      - jackett
-      - radarr
-      - plex
 
   transmission:
     image: "linuxserver/transmission"
@@ -94,10 +88,6 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=sonarr.${DOMAIN_URL}
-    depends_on:
-      - transmission
-      - jackett
-      - plex
   
   radarr:
     image: "linuxserver/radarr"
@@ -114,7 +104,3 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=radarr.${DOMAIN_URL}
-    depends_on:
-      - transmission
-      - jackett
-      - plex
