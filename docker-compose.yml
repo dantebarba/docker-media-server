@@ -3,6 +3,7 @@ services:
   reverse-proxy:
     image: jwilder/nginx-proxy
     container_name: reverse-proxy
+    restart: unless-stopped
     ports:
       - "80:80"
       - "8080:8080"
@@ -15,6 +16,7 @@ services:
     image: "linuxserver/transmission"
     container_name: transmission
     hostname: transmission
+    restart: unless-stopped
     volumes:
       - "${STORAGE_LOCATION}/transmission/config:/config"
       - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
@@ -34,6 +36,7 @@ services:
     image: "linuxserver/jackett"
     container_name: jackett
     hostname: jackett
+    restart: unless-stopped
     volumes:
       - "${STORAGE_LOCATION}/jackett/config:/config"
       - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
@@ -47,6 +50,7 @@ services:
   plex:
     image: "plexinc/pms-docker"
     container_name: plex
+    restart: unless-stopped
     ports:
       - "32400:32400/tcp"
       - "3005:3005/tcp"
@@ -77,6 +81,7 @@ services:
     image: "linuxserver/sonarr"
     container_name: sonarr
     hostname: sonarr
+    restart: unless-stopped
     ports:
      - "8989:8989"
     volumes:
@@ -93,6 +98,7 @@ services:
     image: "linuxserver/radarr"
     container_name: radarr
     hostname: radarr
+    restart: unless-stopped
     ports:
       - "7878:7878"
     volumes:
