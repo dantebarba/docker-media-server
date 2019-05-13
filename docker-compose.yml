@@ -66,6 +66,7 @@ services:
       - "traefik.enable=true"
       - "traefik.port=9117"
       - "traefik.backend=jackett"
+      - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:jackett.${DOMAIN_URL}"
       - "traefik.basic.protocol=https"
 
@@ -99,6 +100,7 @@ services:
       - "traefik.enable=true"
       - "traefik.port=32400"
       - "traefik.backend=plex"
+      - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:plex.${DOMAIN_URL}"
 
 
@@ -122,6 +124,7 @@ services:
       - "traefik.enable=true"
       - "traefik.port=8989"
       - "traefik.backend=sonarr"
+      - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:sonarr.${DOMAIN_URL}"
 
   radarr:
@@ -144,4 +147,5 @@ services:
       - "traefik.enable=true"
       - "traefik.port=7878"
       - "traefik.backend=radarr"
+      - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:radarr.${DOMAIN_URL}"
