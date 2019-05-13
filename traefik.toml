@@ -32,10 +32,11 @@ email = "dantebarba@gmail.com"
 storage = "acme.json"
 entryPoint = "https"
 onHostRule = true
+acmeLogging=true
 [acme.dnsChallenge]
   provider = "cloudflare"
   delayBeforeCheck = 300
 [[acme.domains]]
-   main = "dantebarba.com.ar"
+   main = "media.dantebarba.com.ar"
 [[acme.domains]]
-   main = "*.dantebarba.com.ar"
+   main = "*.media.dantebarba.com.ar"
