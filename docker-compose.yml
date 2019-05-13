@@ -45,6 +45,7 @@ services:
       - "traefik.enable=true"
       - "traefik.port=9091"
       - "traefik.backend=transmission"
+      - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:transmission.${DOMAIN_URL}"
 
   jackett:
