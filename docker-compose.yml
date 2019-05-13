@@ -1,16 +1,23 @@
 version: '2'
+
 services:
-  reverse-proxy:
-    image: jwilder/nginx-proxy
-    container_name: reverse-proxy
+  load-balancer:
+    image: traefik:v1.7.11
+    container_name: load-balancer
     restart: unless-stopped
     ports:
       - "80:80"
-      - "8080:8080"
+      - "443:443"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    environment:
-      - DEFAULT_HOST=${DOMAIN_URL}
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${STORAGE_LOCATION}/traefik:/etc/traefik
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.backend=traefik"
+      - "traefik.frontend.rule=Host:traefik.${DOMAIN_URL}"
 
   transmission:
     image: "linuxserver/transmission"
@@ -25,12 +32,15 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - VIRTUAL_HOST=transmission.${DOMAIN_URL}
-      - VIRTUAL_PORT=9091
     ports:
       - "9091:9091"
       - "51413:51413"
       - "51413:51413/udp"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=9091"
+      - "traefik.backend=transmission"
+      - "traefik.frontend.rule=Host:transmission.${DOMAIN_URL}"
 
   jackett:
     image: "linuxserver/jackett"
@@ -44,9 +54,15 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - VIRTUAL_HOST=jackett.${DOMAIN_URL}
     ports:
       - "9117:9117"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=9117"
+      - "traefik.backend=jackett"
+      - "traefik.frontend.rule=Host:jackett.${DOMAIN_URL}"
+      - "traefik.basic.protocol=https"
+
   plex:
     image: "plexinc/pms-docker"
     container_name: plex
@@ -66,8 +82,6 @@ services:
       - PLEX_CLAIM=${PLEX_CLAIM}
       - PUID=${PUID}
       - PGID=${PGID}
-      - VIRTUAL_HOST=plex.${DOMAIN_URL}
-      - VIRTUAL_PORT=32400
     hostname: ${PLEX_HOSTNAME}
     volumes:
       - "${STORAGE_LOCATION}/plex:/config"
@@ -75,6 +89,11 @@ services:
       - "${STORAGE_LOCATION}/radarr/movies:/movies"
       - "${STORAGE_LOCATION}/plex:/transcode"
       - "${STORAGE_LOCATION}/library:/library"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=32400"
+      - "traefik.backend=plex"
+      - "traefik.frontend.rule=Host:plex.${DOMAIN_URL}"
 
 
   sonarr:
@@ -93,7 +112,12 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=sonarr.${DOMAIN_URL}
-  
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=8989"
+      - "traefik.backend=sonarr"
+      - "traefik.frontend.rule=Host:sonarr.${DOMAIN_URL}"
+
   radarr:
     image: "linuxserver/radarr"
     container_name: radarr
@@ -110,3 +134,8 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=radarr.${DOMAIN_URL}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=7878"
+      - "traefik.backend=radarr"
+      - "traefik.frontend.rule=Host:radarr.${DOMAIN_URL}"
