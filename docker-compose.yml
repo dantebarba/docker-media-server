@@ -8,6 +8,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     environment:
       - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
@@ -20,7 +21,6 @@ services:
       - "traefik.enable=true"
       - "traefik.port=8080"
       - "traefik.backend=traefik"
-      - "traefik.basic.protocol=http"
       - "traefik.frontend.rule=Host:traefik.${DOMAIN_URL}"
 
   transmission:
