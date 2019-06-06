@@ -96,6 +96,7 @@ services:
       - "${STORAGE_LOCATION}/radarr/movies:/movies"
       - "${STORAGE_LOCATION}/plex:/transcode"
       - "${STORAGE_LOCATION}/library:/library"
+      - /tmp:/tmp
     labels:
       - "traefik.enable=true"
       - "traefik.port=32400"
