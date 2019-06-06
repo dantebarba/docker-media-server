@@ -1,59 +1,42 @@
-################################################################
-# Docker Swarmmode configuration backend
-################################################################
+#debug = true
+logLevel = "ERROR" #DEBUG, INFO, WARN, ERROR, FATAL, PANIC
+InsecureSkipVerify = true
 
-# Enable Docker configuration backend.
+defaultEntryPoints = ["http"]
+[api]
+  entryPoint = "traefik"
+  dashboard = true
+  address = ":8080"
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+
+[retry]
+
 [docker]
-
-# Docker server endpoint.
-# Can be a tcp or a unix socket endpoint.
-#
-# Required
-# Default: "unix:///var/run/docker.sock"
-#
-
-# Default domain used.
-# Can be overridden by setting the "traefik.domain" label on a services.
-#
-# Optional
-# Default: ""
-#
-domain = "danteplexmediaserver.ml"
-
-# Enable watch docker changes.
-#
-# Optional
-# Default: true
-#
+endpoint = "unix:///var/run/docker.sock"
+domain = "media.dantebarba.com.ar"
 watch = true
+# This will hide all docker containers that don't have explicitly  
+# set label to "enable"
+exposedbydefault = false
 
-# Use Docker Swarm Mode as data provider.
-#
-# Optional
-# Default: false
-#
-swarmmode = true
-
-# Override default configuration template.
-# For advanced users :)
-#
-# Optional
-#
-# filename = "docker.tmpl"
-
-# Expose services by default in Traefik.
-#
-# Optional
-# Default: true
-#
-# exposedbydefault = true
-
-# Enable docker TLS connection.
-#
-# Optional
-#
-#  [docker.tls]
-#  ca = "/etc/ssl/ca.crt"
-#  cert = "/etc/ssl/docker.crt"
-#  key = "/etc/ssl/docker.key"
-#  insecureskipverify = true
+[acme]
+email = "dantebarba@gmail.com"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+acmeLogging=true
+[acme.dnsChallenge]
+  provider = "cloudflare"
+  delayBeforeCheck = 300
+[[acme.domains]]
+   main = "media.dantebarba.com.ar"
+[[acme.domains]]
+   main = "*.media.dantebarba.com.ar"
