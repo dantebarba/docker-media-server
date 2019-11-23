@@ -68,7 +68,6 @@ services:
       - "traefik.backend=jackett"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:jackett.${DOMAIN_URL}"
-      - "traefik.basic.protocol=https"
 
   plex:
     image: "plexinc/pms-docker"
