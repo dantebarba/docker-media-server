@@ -150,9 +150,9 @@ services:
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:radarr.${DOMAIN_URL}"
 
-  deezeldr:
+  deezldr:
     image: bocki/deezloaderrmx
-    container_name: deezeldr
+    container_name: deezldr
     environmnet:
       PUID: 1000
       PGID: 1000
