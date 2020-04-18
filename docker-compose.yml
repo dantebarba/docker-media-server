@@ -146,7 +146,7 @@ services:
   deezldr:
     image: bocki/deezloaderrmx
     container_name: deezldr
-    environmnet:
+    environment:
       PUID: 1000
       PGID: 1000
     volumes:
