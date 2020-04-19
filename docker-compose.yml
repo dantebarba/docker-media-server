@@ -149,7 +149,9 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
+      TZ: "America/Argentina/Buenos_Aires"
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
       - "${STORAGE_LOCATION}/deezldr/config:/config"
       - "${STORAGE_LOCATION}/deezldr/music:/downloads"
     labels:
