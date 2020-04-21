@@ -93,6 +93,7 @@ services:
       - "${STORAGE_LOCATION}/plex:/config"
       - "${STORAGE_LOCATION}/sonarr/tvseries:/tv"
       - "${STORAGE_LOCATION}/radarr/movies:/movies"
+      - "${STORAGE_LOCATION}/deezldr/music:/music"
       - "${STORAGE_LOCATION}/plex:/transcode"
       - "${STORAGE_LOCATION}/library:/library"
       - /tmp:/tmp
