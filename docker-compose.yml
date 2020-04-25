@@ -166,3 +166,21 @@ services:
       - "traefik.backend=deezeldr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:music.${DOMAIN_URL}"
+
+  jdownloader:
+    image: jlesage/jdownloader-2
+    container_name: jdownloader
+    environment:
+      TZ: "America/Argentina/Buenos_Aires"
+      VNC_PASSWORD: 1234321
+    volumes:
+      - ${STORAGE_LOCATION}/jdownloader/downloads:/output:rw
+      - ${CONFIG_LOCATION}/jdownloader:/config:rw
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=5800"
+      - "traefik.backend=jdownloader"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:downloads.${DOMAIN_URL}"
+
+
