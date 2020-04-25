@@ -175,7 +175,7 @@ services:
       VNC_PASSWORD: 1234321
     volumes:
       - ${STORAGE_LOCATION}/jdownloader/downloads:/output:rw
-      - ${CONFIG_LOCATION}/jdownloader:/config:rw
+      - ${STORAGE_LOCATION}/jdownloader/config:/config:rw
     labels:
       - "traefik.enable=true"
       - "traefik.port=5800"
