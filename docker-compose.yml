@@ -151,22 +151,6 @@ services:
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:radarr.${DOMAIN_URL}"
 
-  deezldr:
-    image: bocki/deezloaderrmx
-    container_name: deezldr
-    environment:
-      PUID: 1000
-      PGID: 1000
-    volumes:
-      - "${STORAGE_LOCATION}/deezldr/config:/config"
-      - "${STORAGE_LOCATION}/deezldr/music:/downloads"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=1730"
-      - "traefik.backend=deezeldr"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:music.${DOMAIN_URL}"
-
   jdownloader:
     image: jlesage/jdownloader-2
     container_name: jdownloader
