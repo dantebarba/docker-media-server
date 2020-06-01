@@ -183,4 +183,16 @@ services:
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:downloads.${DOMAIN_URL}"
 
+  kitana:
+    image: pannal/kitana
+    container_name: kitana
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=31337"
+      - "traefik.backend=kitana"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:kitana.${DOMAIN_URL}"
+
+
 
