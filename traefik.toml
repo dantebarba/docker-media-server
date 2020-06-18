@@ -38,5 +38,3 @@ acmeLogging=true
   delayBeforeCheck = 300
 [[acme.domains]]
    main = "crown.dantebarba.com.ar"
-[[acme.domains]]
-   main = "*.crown.dantebarba.com.ar"
