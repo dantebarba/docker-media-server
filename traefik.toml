@@ -21,7 +21,7 @@ defaultEntryPoints = ["http"]
 
 [docker]
 endpoint = "unix:///var/run/docker.sock"
-domain = "media.dantebarba.com.ar"
+domain = "crown.dantebarba.com.ar"
 watch = true
 # This will hide all docker containers that don't have explicitly  
 # set label to "enable"
@@ -37,6 +37,6 @@ acmeLogging=true
   provider = "cloudflare"
   delayBeforeCheck = 300
 [[acme.domains]]
-   main = "media.dantebarba.com.ar"
+   main = "crown.dantebarba.com.ar"
 [[acme.domains]]
-   main = "*.media.dantebarba.com.ar"
+   main = "*.crown.dantebarba.com.ar"
