@@ -166,25 +166,6 @@ services:
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
 
-  jdownloader:
-    image: jlesage/jdownloader-2
-    container_name: jdownloader
-    environment:
-      TZ: "America/Argentina/Buenos_Aires"
-      VNC_PASSWORD: 1234321
-    volumes:
-      - ${STORAGE_LOCATION}/jdownloader/downloads:/output:rw
-      - ${STORAGE_LOCATION}/jdownloader/config:/config:rw
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=5800"
-      - "traefik.backend=jdownloader"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:downloads.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
-  
   kitana:
     image: pannal/kitana
     container_name: kitana
