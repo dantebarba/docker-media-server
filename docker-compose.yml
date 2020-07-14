@@ -23,6 +23,9 @@ services:
       - "traefik.backend=traefik"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:traefik.${DOMAIN_URL}"
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
   transmission:
     image: "linuxserver/transmission"
@@ -47,6 +50,9 @@ services:
       - "traefik.backend=transmission"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:transmission.${DOMAIN_URL}"
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
   jackett:
     image: "linuxserver/jackett"
@@ -68,6 +74,9 @@ services:
       - "traefik.backend=jackett"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:jackett.${DOMAIN_URL}"
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
   plex:
     image: "plexinc/pms-docker"
@@ -127,6 +136,9 @@ services:
       - "traefik.backend=sonarr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:sonarr.${DOMAIN_URL}"
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
   radarr:
     image: "linuxserver/radarr"
@@ -169,7 +181,10 @@ services:
       - "traefik.backend=jdownloader"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:downloads.${DOMAIN_URL}"
-
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
+  
   kitana:
     image: pannal/kitana
     container_name: kitana
@@ -180,6 +195,9 @@ services:
       - "traefik.backend=kitana"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:kitana.${DOMAIN_URL}"
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
 
 
