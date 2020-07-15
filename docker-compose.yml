@@ -25,8 +25,9 @@ services:
       - "traefik.backend=transmission"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:transmission.${DOMAIN_URL}"
-    networks:
-      - main
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
   jackett:
     image: "linuxserver/jackett"
@@ -49,16 +50,16 @@ services:
       - "traefik.backend=jackett"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:jackett.${DOMAIN_URL}"
-      - "traefik.basic.protocol=https"
-    networks:
-      - main
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
   plex:
     image: "plexinc/pms-docker"
     container_name: plex
     restart: unless-stopped
     ports:
-      - "32400:32400/tcp"
+      - "3240:32400/tcp"
       - "3005:3005/tcp"
       - "8324:8324/tcp"
       - "32469:32469/tcp"
@@ -78,6 +79,7 @@ services:
       - "${STORAGE_LOCATION}/sonarr/tvseries:/tv"
       - "${STORAGE_LOCATION}/deezldr/music"
       - "${STORAGE_LOCATION}/radarr/movies:/movies"
+      - "${STORAGE_LOCATION}/deezldr/music:/music"
       - "${STORAGE_LOCATION}/plex:/transcode"
       - "${STORAGE_LOCATION}/library:/library"
       - /tmp:/tmp
@@ -115,9 +117,12 @@ services:
       - "traefik.backend=sonarr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:sonarr.${DOMAIN_URL}"
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
     networks:
       - main
-
+      
   radarr:
     image: "linuxserver/radarr"
     container_name: radarr
@@ -141,29 +146,23 @@ services:
       - "traefik.backend=radarr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:radarr.${DOMAIN_URL}"
-    networks:
-      - main
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
-  deezldr:
-    image: bocki/deezloaderrmx
-    container_name: deezldr
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: "America/Argentina/Buenos_Aires"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "${STORAGE_LOCATION}/deezldr/config:/config"
-      - "${STORAGE_LOCATION}/deezldr/music:/downloads"
+  kitana:
+    image: pannal/kitana
+    container_name: kitana
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.port=1730"
-      - "traefik.backend=deezeldr"
+      - "traefik.port=31337"
+      - "traefik.backend=kitana"
       - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:music.${DOMAIN_URL}"
-    networks:
-      - main
+      - "traefik.frontend.rule=Host:kitana.${DOMAIN_URL}"
+      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+      - traefik.frontend.auth.forward.trustForwardHeader=true
 
-networks:
-  main:
-    external: true
+
+
