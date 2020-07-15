@@ -11,15 +11,15 @@ services:
       - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
       - "${STORAGE_LOCATION}/transmission/watch:/watch"
       - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TRANSMISSION_WEB_HOME=/combustion-release/
       - TRANSMISSION_RPC_WHITELIST_ENABLED=false
       - TRANSMISSION_RPC_HOST_WHITELIST_ENABLED=true
       - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=false
       - TRANSMISSION_RPC_HOST_WHITELIST=${TRANSMISSION_HOST_WHITELIST}
       # - TRANSMISSION_RPC_WHITELIST=${TRANSMISSION_RPC_WHITELIST}
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TRANSMISSION_WEB_HOME=/combustion-release/
     ports:
       - "51413:51413"
       - "51413:51413/udp"
