@@ -18,6 +18,8 @@ services:
       - "9091:9091"
       - "51413:51413"
       - "51413:51413/udp"
+    networks:
+      - main
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=main"
@@ -41,6 +43,8 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+    networks:
+      - main
     ports:
       - "9117:9117"
     labels:
@@ -139,6 +143,8 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=radarr.${DOMAIN_URL}
+    networks:
+      - main
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=main"
@@ -163,6 +169,12 @@ services:
       - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
+    networks:
+      - main
+
+networks: 
+  main:
+    external: true
 
 
 
