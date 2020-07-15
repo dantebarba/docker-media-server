@@ -11,6 +11,11 @@ services:
       - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
       - "${STORAGE_LOCATION}/transmission/watch:/watch"
       - "/etc/localtime:/etc/localtime:ro"
+      - TRANSMISSION_RPC_WHITELIST_ENABLED=false
+      - TRANSMISSION_RPC_HOST_WHITELIST_ENABLED=true
+      - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=false
+      - TRANSMISSION_RPC_HOST_WHITELIST=${TRANSMISSION_HOST_WHITELIST}
+      # - TRANSMISSION_RPC_WHITELIST=${TRANSMISSION_RPC_WHITELIST}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
