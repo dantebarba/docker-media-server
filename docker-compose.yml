@@ -183,7 +183,7 @@ services:
     volumes:
       - ${STORAGE_LOCATION}/bazarr/config:/config
       - ${STORAGE_LOCATION}/radarr/movies:/movies
-      - ${STORAGE_LOCATION}/sonarr/tv:/tv
+      - ${STORAGE_LOCATION}/sonarr/tvseries:/tv
     labels:
       - "traefik.enable=true"
       - "traefik.port=6767"
