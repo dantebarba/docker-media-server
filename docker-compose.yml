@@ -27,7 +27,7 @@ services:
       - "traefik.backend=transmission"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:transmission.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
 
@@ -54,7 +54,7 @@ services:
       - "traefik.backend=jackett"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:jackett.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
 
@@ -112,7 +112,7 @@ services:
       - "traefik.backend=sonarr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:sonarr.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
     networks:
@@ -141,7 +141,7 @@ services:
       - "traefik.backend=radarr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:radarr.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
 
@@ -155,7 +155,7 @@ services:
       - "traefik.backend=kitana"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:kitana.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
     networks:
@@ -179,7 +179,7 @@ services:
       - "traefik.backend=bazarr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:bazarr.${DOMAIN_URL}"
-      - "traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}"
+      - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
       - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
       - "traefik.frontend.auth.forward.trustForwardHeader=true"
     networks:
