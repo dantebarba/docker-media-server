@@ -66,19 +66,15 @@ services:
       - "3240:32400/tcp"
       - "3005:3005/tcp"
     environment:
-      - TZ="America/Argentina/Buenos_Aires"
+      - TZ=${DOCKER_TZ}
       - PLEX_CLAIM=${PLEX_CLAIM}
       - PUID=${PUID}
       - PGID=${PGID}
     hostname: ${PLEX_HOSTNAME}
     volumes:
       - "${STORAGE_LOCATION}/plex:/config"
-      - "${STORAGE_LOCATION}/sonarr/tvseries:/tv"
-      - "${STORAGE_LOCATION}/deezldr/music"
-      - "${STORAGE_LOCATION}/radarr/movies:/movies"
-      - "${STORAGE_LOCATION}/deezldr/music:/music"
       - "${STORAGE_LOCATION}/plex:/transcode"
-      - "${STORAGE_LOCATION}/library:/library"
+      - ${MEDIA_LOCATION}:/media
       - /tmp:/tmp
     labels:
       - "traefik.enable=true"
@@ -100,6 +96,7 @@ services:
      - "/etc/localtime:/etc/localtime:ro"
      - "${STORAGE_LOCATION}/sonarr/config:/config"
      - "${STORAGE_LOCATION}:/docker"
+     - ${MEDIA_LOCATION}:/media
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
@@ -126,6 +123,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "${STORAGE_LOCATION}/radarr/config:/config"
       - "${STORAGE_LOCATION}:/docker"
+      - ${MEDIA_LOCATION}:/media
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
@@ -163,13 +161,13 @@ services:
     image: linuxserver/bazarr:latest
     container_name: bazarr
     environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: 'America/Argentina/Buenos_Aires'
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${DOCKER_TZ}
     restart: unless-stopped
     volumes:
       - ${STORAGE_LOCATION}/bazarr/config:/config
-      - ${STORAGE_LOCATION}:/docker
+      - ${MEDIA_LOCATION}:/media
     labels:
       - "traefik.enable=true"
       - "traefik.port=6767"
