@@ -141,22 +141,6 @@ services:
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
 
-  kitana:
-    image: pannal/kitana
-    container_name: kitana
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=31337"
-      - "traefik.backend=kitana"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:kitana.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
-    networks:
-      - main
-
   bazarr:
     image: linuxserver/bazarr:latest
     container_name: bazarr
