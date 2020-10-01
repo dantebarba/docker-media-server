@@ -1,36 +1,6 @@
 version: '2'
 
 services:
-  transmission:
-    image: "linuxserver/transmission"
-    container_name: transmission
-    hostname: transmission
-    restart: unless-stopped
-    volumes:
-      - "${STORAGE_LOCATION}/transmission/config:/config"
-      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
-      - "${STORAGE_LOCATION}/transmission/watch:/watch"
-      - "/etc/localtime:/etc/localtime:ro"
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TRANSMISSION_WEB_HOME=/combustion-release/
-    ports:
-      - "51413:51413"
-      - "51413:51413/udp"
-    networks:
-      - main
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=main"
-      - "traefik.port=9091"
-      - "traefik.backend=transmission"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:transmission.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
-
   jackett:
     image: "linuxserver/jackett"
     container_name: jackett
@@ -185,6 +155,34 @@ services:
       - "traefik.frontend.auth.forward.trustForwardHeader=true"
     networks:
       - main
+    restart: unless-stopped
+
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${DOCKER_TZ}
+      - WEBUI_PORT=8080
+    volumes:
+      - ${STORAGE_LOCATION}/qbittorrent:/config
+      - ${STORAGE_LOCATION}/qbittorrent/downloads:/downloads
+      - ${MEDIA_LOCATION}:/media
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.backend=qbt"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:qbt.${DOMAIN_URL}"
+      - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
+      - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
+      - "traefik.frontend.auth.forward.trustForwardHeader=true"
+    networks:
+      - main
+    ports:
+      - 49122:49122
+      - 49122:49122/udp
     restart: unless-stopped
 
 networks: 
