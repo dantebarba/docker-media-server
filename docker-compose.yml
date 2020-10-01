@@ -164,6 +164,29 @@ services:
     networks:
       - main
 
+  nzbhydra2:
+    image: linuxserver/nzbhydra2
+    container_name: nzbhydra2
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${DOCKER_TZ}
+    volumes:
+      - ${STORAGE_LOCATION}/nzbhydra:/config
+      - ${MEDIA_LOCATION}:/media
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=5076"
+      - "traefik.backend=nzbhydra"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:nzbhydra.${DOMAIN_URL}"
+      - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
+      - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
+      - "traefik.frontend.auth.forward.trustForwardHeader=true"
+    networks:
+      - main
+    restart: unless-stopped
+
 networks: 
   main:
     external: true
