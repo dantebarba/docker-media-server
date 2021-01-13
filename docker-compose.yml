@@ -26,6 +26,7 @@ services:
       - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
+      - "group=mediaserver"
 
   plex:
     image: "plexinc/pms-docker"
@@ -52,6 +53,7 @@ services:
       - "traefik.backend=plex"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:plex.${DOMAIN_URL}"
+      - "group=mediaserver"
     networks:
       - main
 
@@ -80,6 +82,7 @@ services:
       - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
+      - "group=mediaserver"
     networks:
       - main
       
@@ -109,6 +112,7 @@ services:
       - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
+      - "group=mediaserver"
 
   bazarr:
     image: linuxserver/bazarr:latest
@@ -130,6 +134,7 @@ services:
       - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
       - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
       - "traefik.frontend.auth.forward.trustForwardHeader=true"
+      - "group=mediaserver"
     networks:
       - main
 
@@ -152,6 +157,7 @@ services:
       - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
       - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
       - "traefik.frontend.auth.forward.trustForwardHeader=true"
+      - "group=mediaserver"
     networks:
       - main
     restart: unless-stopped
@@ -177,6 +183,7 @@ services:
       - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
       - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
       - "traefik.frontend.auth.forward.trustForwardHeader=true"
+      - "group=mediaserver"
     networks:
       - main
     ports:
