@@ -68,6 +68,7 @@ services:
      - "${STORAGE_LOCATION}/sonarr/config:/config"
      - "${STORAGE_LOCATION}:/docker"
      - /mnt/media:/media
+     - /mnt/watch:/watch
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
@@ -96,6 +97,7 @@ services:
       - "${STORAGE_LOCATION}/radarr/config:/config"
       - "${STORAGE_LOCATION}:/docker"
       - /mnt/media:/media
+      - /mnt/watch:/watch
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
