@@ -67,7 +67,7 @@ services:
      - "/etc/localtime:/etc/localtime:ro"
      - "${STORAGE_LOCATION}/sonarr/config:/config"
      - "${STORAGE_LOCATION}:/docker"
-     - /mnt/media:/media
+     - ${MEDIA_LOCATION}:/media
      - /mnt/watch:/watch
     environment:
      - PUID=${PUID}
@@ -96,7 +96,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "${STORAGE_LOCATION}/radarr/config:/config"
       - "${STORAGE_LOCATION}:/docker"
-      - /mnt/media:/media
+      - ${MEDIA_LOCATION}:/media
       - /mnt/watch:/watch
     environment:
      - PUID=${PUID}
@@ -126,7 +126,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${STORAGE_LOCATION}/bazarr/config:/config
-      - /mnt/media:/media
+      - ${MEDIA_LOCATION}:/media
     labels:
       - "traefik.enable=true"
       - "traefik.port=6767"
