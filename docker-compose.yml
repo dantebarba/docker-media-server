@@ -141,7 +141,7 @@ services:
       - main
 
   nzbhydra2:
-    image: linuxserver/nzbhydra2
+    image: ghcr.io/linuxserver/nzbhydra2
     container_name: nzbhydra2
     environment:
       - PUID=${PUID}
@@ -204,8 +204,6 @@ services:
       - ${STORAGE_LOCATION}/nzbget/config:/config
       - ${STORAGE_LOCATION}/nzbget/downloads:/downloads
       - /mnt/watch:/watch
-    ports:
-      - 6789:6789
     labels:
       - "traefik.enable=true"
       - "traefik.port=6789"
