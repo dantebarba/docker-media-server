@@ -1,32 +1,6 @@
 version: '2'
 
 services:
-  load-balancer:
-    image: traefik:v1.7.11
-    container_name: load-balancer
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
-    environment:
-      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
-      - CF_API_KEY=${CLOUDFLARE_API_KEY}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${STORAGE_LOCATION}/traefik:/etc/traefik
-      - ./traefik.toml:/traefik.toml
-      - ./acme.json:/acme.json
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=8080"
-      - "traefik.backend=traefik"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:traefik.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
-
   transmission:
     image: "linuxserver/transmission"
     container_name: transmission
@@ -44,36 +18,14 @@ services:
       - "9091:9091"
       - "51413:51413"
       - "51413:51413/udp"
+    networks:
+        - main
     labels:
       - "traefik.enable=true"
       - "traefik.port=9091"
       - "traefik.backend=transmission"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:transmission.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
-
-  jackett:
-    image: "linuxserver/jackett"
-    container_name: jackett
-    hostname: jackett
-    restart: unless-stopped
-    volumes:
-      - "${STORAGE_LOCATION}/jackett/config:/config"
-      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
-      - "/etc/localtime:/etc/localtime:ro"
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-    ports:
-      - "9117:9117"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=9117"
-      - "traefik.backend=jackett"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:jackett.${DOMAIN_URL}"
       - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
@@ -106,6 +58,8 @@ services:
       - "${STORAGE_LOCATION}/plex:/transcode"
       - "${STORAGE_LOCATION}/library:/library"
       - /tmp:/tmp
+    networks:
+        - main
     labels:
       - "traefik.enable=true"
       - "traefik.port=32400"
@@ -130,6 +84,8 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=sonarr.${DOMAIN_URL}
+    networks:
+      - main
     labels:
       - "traefik.enable=true"
       - "traefik.port=8989"
@@ -156,6 +112,8 @@ services:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=radarr.${DOMAIN_URL}
+    networks:
+      - main
     labels:
       - "traefik.enable=true"
       - "traefik.port=7878"
@@ -166,19 +124,7 @@ services:
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
 
-  kitana:
-    image: pannal/kitana
-    container_name: kitana
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=31337"
-      - "traefik.backend=kitana"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:kitana.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
 
-
-
+networks:
+  external:
+    - main
