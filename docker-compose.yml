@@ -79,7 +79,7 @@ services:
       - traefik.frontend.auth.forward.trustForwardHeader=true
 
   plex:
-    image: "plexinc/pms-docker"
+    image: "plexinc/pms-docker:1.22.3.4392-d7c624def"
     container_name: plex
     restart: unless-stopped
     ports:
