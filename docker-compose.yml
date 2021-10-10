@@ -126,5 +126,5 @@ services:
 
 
 networks:
-  external:
-    - main
+  main:
+    external: true
