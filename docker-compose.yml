@@ -141,7 +141,7 @@ services:
       - traefik.frontend.auth.forward.trustForwardHeader=true
 
   radarr:
-    image: "linuxserver/radarr"
+    image: "linuxserver/radarr:3.1.1.4954-ls104"
     container_name: radarr
     hostname: radarr
     restart: unless-stopped
