@@ -29,7 +29,7 @@ services:
       - "group=mediaserver"
 
   plex:
-    image: "plexinc/pms-docker:1.22.3.4392-d7c624def"
+    image: "plexinc/pms-docker:latest"
     container_name: plex
     restart: unless-stopped
     ports:
