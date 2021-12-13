@@ -1,59 +1,6 @@
 version: '2'
 
 services:
-  load-balancer:
-    image: traefik:v1.7.11
-    container_name: load-balancer
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
-    environment:
-      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
-      - CF_API_KEY=${CLOUDFLARE_API_KEY}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${STORAGE_LOCATION}/traefik:/etc/traefik
-      - ./traefik.toml:/traefik.toml
-      - ./acme.json:/acme.json
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=8080"
-      - "traefik.backend=traefik"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:traefik.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
-
-  transmission:
-    image: "linuxserver/transmission"
-    container_name: transmission
-    hostname: transmission
-    restart: unless-stopped
-    volumes:
-      - "${STORAGE_LOCATION}/transmission/config:/config"
-      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
-      - "${STORAGE_LOCATION}/transmission/watch:/watch"
-      - "/etc/localtime:/etc/localtime:ro"
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-    ports:
-      - "9091:9091"
-      - "51413:51413"
-      - "51413:51413/udp"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=9091"
-      - "traefik.backend=transmission"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:transmission.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
-
   jackett:
     image: "linuxserver/jackett"
     container_name: jackett
@@ -61,22 +8,25 @@ services:
     restart: unless-stopped
     volumes:
       - "${STORAGE_LOCATION}/jackett/config:/config"
-      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+    networks:
+      - main
     ports:
       - "9117:9117"
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=main"
       - "traefik.port=9117"
       - "traefik.backend=jackett"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:jackett.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
+      - "group=mediaserver"
 
   plex:
     image: "plexinc/pms-docker:1.22.3.4392-d7c624def"
@@ -85,33 +35,27 @@ services:
     ports:
       - "32400:32400/tcp"
       - "3005:3005/tcp"
-      - "8324:8324/tcp"
-      - "32469:32469/tcp"
-      - "1900:1900/udp"
-      - "32410:32410/udp"
-      - "32412:32412/udp"
-      - "32413:32413/udp"
-      - "32414:32414/udp"
     environment:
-      - TZ="America/Argentina/Buenos_Aires"
+      - TZ=${DOCKER_TZ}
       - PLEX_CLAIM=${PLEX_CLAIM}
       - PUID=${PUID}
       - PGID=${PGID}
     hostname: ${PLEX_HOSTNAME}
     volumes:
       - "${STORAGE_LOCATION}/plex:/config"
-      - "${STORAGE_LOCATION}/sonarr/tvseries:/tv"
-      - "${STORAGE_LOCATION}/radarr/movies:/movies"
-      - "${STORAGE_LOCATION}/deezldr/music:/music"
       - "${STORAGE_LOCATION}/plex:/transcode"
-      - "${STORAGE_LOCATION}/library:/library"
+      - ${MEDIA_LOCATION}:/media
       - /tmp:/tmp
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=main"
       - "traefik.port=32400"
       - "traefik.backend=plex"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:plex.${DOMAIN_URL}"
+      - "group=mediaserver"
+    networks:
+      - main
 
 
   sonarr:
@@ -119,66 +63,164 @@ services:
     container_name: sonarr
     hostname: sonarr
     restart: unless-stopped
-    ports:
-     - "8989:8989"
     volumes:
      - "/etc/localtime:/etc/localtime:ro"
      - "${STORAGE_LOCATION}/sonarr/config:/config"
-     - "${STORAGE_LOCATION}/sonarr/tvseries:/tv"
-     - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
+     - "${STORAGE_LOCATION}:/docker"
+     - ${MEDIA_LOCATION}:/media
+     - /mnt/watch:/watch
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=sonarr.${DOMAIN_URL}
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=main"
       - "traefik.port=8989"
       - "traefik.backend=sonarr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:sonarr.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
-
+      - "group=mediaserver"
+    networks:
+      - main
+      
   radarr:
     image: "linuxserver/radarr"
     container_name: radarr
     hostname: radarr
     restart: unless-stopped
-    ports:
-      - "7878:7878"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "${STORAGE_LOCATION}/radarr/config:/config"
-      - "${STORAGE_LOCATION}/radarr/movies:/movies"
-      - "${STORAGE_LOCATION}/transmission/downloads:/downloads"
+      - "${STORAGE_LOCATION}:/docker"
+      - ${MEDIA_LOCATION}:/media
+      - /mnt/watch:/watch
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
      - VIRTUAL_HOST=radarr.${DOMAIN_URL}
+    networks:
+      - main
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=main"
       - "traefik.port=7878"
       - "traefik.backend=radarr"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.rule=Host:radarr.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
+      - traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}
       - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
       - traefik.frontend.auth.forward.trustForwardHeader=true
+      - "group=mediaserver"
 
-  kitana:
-    image: pannal/kitana
-    container_name: kitana
+  bazarr:
+    image: linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${DOCKER_TZ}
     restart: unless-stopped
+    volumes:
+      - ${STORAGE_LOCATION}/bazarr/config:/config
+      - ${MEDIA_LOCATION}:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.port=31337"
-      - "traefik.backend=kitana"
+      - "traefik.port=6767"
+      - "traefik.backend=bazarr"
       - "traefik.frontend.entryPoints=http,https"
-      - "traefik.frontend.rule=Host:kitana.${DOMAIN_URL}"
-      - traefik.frontend.auth.forward.address=https://auth.${DOMAIN_URL}
-      - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
-      - traefik.frontend.auth.forward.trustForwardHeader=true
+      - "traefik.frontend.rule=Host:bazarr.${DOMAIN_URL}"
+      - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
+      - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
+      - "traefik.frontend.auth.forward.trustForwardHeader=true"
+      - "group=mediaserver"
+    networks:
+      - main
+
+  nzbhydra2:
+    image: ghcr.io/linuxserver/nzbhydra2
+    container_name: nzbhydra2
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${DOCKER_TZ}
+    volumes:
+      - ${STORAGE_LOCATION}/nzbhydra:/config
+      - /mnt/watch:/watch
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=5076"
+      - "traefik.backend=nzbhydra"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:nzbhydra.${DOMAIN_URL}"
+      - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
+      - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
+      - "traefik.frontend.auth.forward.trustForwardHeader=true"
+      - "group=mediaserver"
+    networks:
+      - main
+    restart: unless-stopped
+
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${DOCKER_TZ}
+      - WEBUI_PORT=8080
+    volumes:
+      - ${STORAGE_LOCATION}/qbittorrent:/config
+      - ${STORAGE_LOCATION}/qbittorrent/downloads:/downloads
+      - /mnt/watch:/watch
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.backend=qbt"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:qbt.${DOMAIN_URL}"
+      - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
+      - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
+      - "traefik.frontend.auth.forward.trustForwardHeader=true"
+      - "group=mediaserver"
+    networks:
+      - main
+    ports:
+      - 49122:49122
+      - 49122:49122/udp
+    restart: unless-stopped
+
+  nzbget:
+    image: ghcr.io/linuxserver/nzbget
+    container_name: nzbget
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${DOCKER_TZ}
+    volumes:
+      - ${STORAGE_LOCATION}/nzbget/config:/config
+      - ${STORAGE_LOCATION}/nzbget/downloads:/downloads
+      - /mnt/watch:/watch
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=6789"
+      - "traefik.backend=nzbget"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:nzbget.${DOMAIN_URL}"
+      - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
+      - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
+      - "traefik.frontend.auth.forward.trustForwardHeader=true"
+      - "group=mediaserver"
+    networks:
+      - main
+    restart: unless-stopped
+
+networks: 
+  main:
+    external: true
 
 
 
