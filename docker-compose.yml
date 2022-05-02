@@ -117,7 +117,7 @@ services:
       - "group=mediaserver"
 
   bazarr:
-    image: linuxserver/bazarr:latest
+    image: linuxserver/bazarr@sha256:e2258da6e5e3b0f4262749a371a5ab39b5e503c82ff56aad9b3d61ba09488aef
     container_name: bazarr
     environment:
       PUID: ${PUID}
