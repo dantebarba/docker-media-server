@@ -192,6 +192,8 @@ services:
       - 49122:49122
       - 49122:49122/udp
     restart: unless-stopped
+    profiles:
+      - downloader
 
   nzbget:
     image: ghcr.io/linuxserver/nzbget
@@ -217,6 +219,8 @@ services:
     networks:
       - main
     restart: unless-stopped
+    profiles:
+      - downloader
 
 networks: 
   main:
