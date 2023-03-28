@@ -59,7 +59,7 @@ services:
 
 
   sonarr:
-    image: "linuxserver/sonarr"
+    image: "linuxserver/sonarr:preview-version-3.0.5.1143"
     container_name: sonarr
     hostname: sonarr
     restart: unless-stopped
@@ -117,7 +117,7 @@ services:
       - "group=mediaserver"
 
   bazarr:
-    image: linuxserver/bazarr:1.0.4
+    image: linuxserver/bazarr:1.2.0
     container_name: bazarr
     environment:
       PUID: ${PUID}
@@ -141,7 +141,7 @@ services:
       - main
 
   nzbhydra2:
-    image: ghcr.io/linuxserver/nzbhydra2
+    image: ghcr.io/linuxserver/nzbhydra2:4.1.0
     container_name: nzbhydra2
     environment:
       - PUID=${PUID}
