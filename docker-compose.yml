@@ -2,7 +2,7 @@ version: '2'
 
 services:
   jackett:
-    image: "linuxserver/jackett"
+    image: "linuxserver/jackett:version-v0.20.3521"
     container_name: jackett
     hostname: jackett
     restart: unless-stopped
@@ -29,7 +29,7 @@ services:
       - "group=mediaserver"
 
   plex:
-    image: "plexinc/pms-docker:latest"
+    image: "plexinc/pms-docker:1.31.1.6733-bc0674160"
     container_name: plex
     restart: unless-stopped
     ports:
@@ -88,7 +88,7 @@ services:
       - main
       
   radarr:
-    image: "linuxserver/radarr"
+    image: "linuxserver/radarr:4.3.2.6857-ls164"
     container_name: radarr
     hostname: radarr
     restart: unless-stopped
@@ -196,7 +196,7 @@ services:
       - downloader
 
   nzbget:
-    image: ghcr.io/linuxserver/nzbget
+    image: ghcr.io/linuxserver/nzbget:version-v21.1
     container_name: nzbget
     environment:
       - PUID=${PUID}
