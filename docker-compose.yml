@@ -22,7 +22,7 @@ services:
       - "traefik.docker.network=main"
       - "traefik.http.routers.jackett.entrypoints=websecure,web"
       - "traefik.http.routers.jackett.middlewares=traefik-forward-auth,tls-headers"
-      - "traefik.http.services.jackett.loadbalancer.server.port=7171"
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
       - "group=mediaserver"
 
   plex:
