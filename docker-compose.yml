@@ -200,12 +200,13 @@ services:
       - ${MEDIA_LOCATION}:/media
     labels:
       - "traefik.enable=true"
+      - "traefik.http.middlewares.nzbget-auth.headers.customrequestheaders.Authorization=Basic ${NZB_AUTH}"
       - "traefik.http.routers.nzbget.rule=Host(`nzbget.${BASE_DOMAIN_URL}`)"
       - "traefik.http.routers.nzbget.tls=true"
       - "traefik.http.routers.nzbget.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
       - "traefik.http.routers.nzbget.entrypoints=websecure,web"
-      - "traefik.http.routers.nzbget.middlewares=traefik-forward-auth,tls-headers"
+      - "traefik.http.routers.nzbget.middlewares=traefik-forward-auth,tls-headers,nzbget-auth"
       - "traefik.http.services.nzbget.loadbalancer.server.port=6789"
       - "group=mediaserver"
     networks:
