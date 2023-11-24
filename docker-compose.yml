@@ -16,7 +16,7 @@ services:
       - main
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jackett.rule=Host(`jackett.${DOMAIN_URL}`)"
+      - "traefik.http.routers.jackett.rule=Host(`jackett.${BASE_DOMAIN_URL}`)"
       - "traefik.http.routers.jackett.tls=true"
       - "traefik.http.routers.jackett.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
@@ -45,7 +45,7 @@ services:
       - /tmp:/tmp
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.plex.rule=Host(`plex.${DOMAIN_URL}`)"
+      - "traefik.http.routers.plex.rule=Host(`plex.${BASE_DOMAIN_URL}`)"
       - "traefik.http.routers.plex.tls=true"
       - "traefik.http.routers.plex.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
@@ -69,10 +69,10 @@ services:
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
-     - VIRTUAL_HOST=sonarr.${DOMAIN_URL}
+     - VIRTUAL_HOST=sonarr.${BASE_DOMAIN_URL}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN_URL}`)"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.${BASE_DOMAIN_URL}`)"
       - "traefik.http.routers.sonarr.tls=true"
       - "traefik.http.routers.sonarr.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
@@ -95,12 +95,12 @@ services:
     environment:
      - PUID=${PUID}
      - PGID=${PGID}
-     - VIRTUAL_HOST=radarr.${DOMAIN_URL}
+     - VIRTUAL_HOST=radarr.${BASE_DOMAIN_URL}
     networks:
       - main
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN_URL}`)"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.${BASE_DOMAIN_URL}`)"
       - "traefik.http.routers.radarr.tls=true"
       - "traefik.http.routers.radarr.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
@@ -122,7 +122,7 @@ services:
       - ${MEDIA_LOCATION}:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN_URL}`)"
+      - "traefik.http.routers.bazarr.rule=Host(`bazarr.${BASE_DOMAIN_URL}`)"
       - "traefik.http.routers.bazarr.tls=true"
       - "traefik.http.routers.bazarr.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
@@ -145,7 +145,7 @@ services:
       - ${MEDIA_LOCATION}:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nzbhydra.rule=Host(`nzbhydra.${DOMAIN_URL}`)"
+      - "traefik.http.routers.nzbhydra.rule=Host(`nzbhydra.${BASE_DOMAIN_URL}`)"
       - "traefik.http.routers.nzbhydra.tls=true"
       - "traefik.http.routers.nzbhydra.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
@@ -174,7 +174,7 @@ services:
 #     - "traefik.port=8080"
 #     - "traefik.backend=qbt"
 #     - "traefik.frontend.entryPoints=http,https"
-#     - "traefik.frontend.rule=Host:qbt.${DOMAIN_URL}"
+#     - "traefik.frontend.rule=Host:qbt.${BASE_DOMAIN_URL}"
 #     - "traefik.frontend.auth.forward.address=${OAUTH_FORWARD_URL}"
 #     - "traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User"
 #     - "traefik.frontend.auth.forward.trustForwardHeader=true"
@@ -200,7 +200,7 @@ services:
       - ${MEDIA_LOCATION}:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nzbget.rule=Host(`nzbget.${DOMAIN_URL}`)"
+      - "traefik.http.routers.nzbget.rule=Host(`nzbget.${BASE_DOMAIN_URL}`)"
       - "traefik.http.routers.nzbget.tls=true"
       - "traefik.http.routers.nzbget.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
