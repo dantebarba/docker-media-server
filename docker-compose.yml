@@ -215,7 +215,27 @@ services:
     profiles:
       - downloader
 
-
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - LOG_LEVEL=warning
+      - TZ=${DOCKER_TZ}
+      - PORT=5055 #optional
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.overseerr.rule=Host(`media.${BASE_DOMAIN_URL}`)"
+      - "traefik.http.routers.overseerr.tls=true"
+      - "traefik.http.routers.overseerr.tls.certresolver=myresolver"
+      - "traefik.docker.network=main"
+      - "traefik.http.routers.overseerr.entrypoints=websecure,web"
+      - "traefik.http.routers.overseerr.middlewares=traefik-forward-auth,tls-headers"
+      - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
+      - "group=mediaserver"
+    volumes:
+      - $STORAGE_LOCATION/overseerr:/app/config
+    restart: unless-stopped
+  
 networks:
   main:
     external: true
