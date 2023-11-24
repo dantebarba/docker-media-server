@@ -235,6 +235,8 @@ services:
     volumes:
       - $STORAGE_LOCATION/overseerr:/app/config
     restart: unless-stopped
+    networks:
+      - main
   
 networks:
   main:
