@@ -229,7 +229,7 @@ services:
       - "traefik.http.routers.overseerr.tls.certresolver=myresolver"
       - "traefik.docker.network=main"
       - "traefik.http.routers.overseerr.entrypoints=websecure,web"
-      - "traefik.http.routers.overseerr.middlewares=traefik-forward-auth,tls-headers"
+      - "traefik.http.routers.overseerr.middlewares=tls-headers"
       - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
       - "group=mediaserver"
     volumes:
