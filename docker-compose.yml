@@ -206,7 +206,7 @@ services:
       - "traefik.docker.network=main"
       - "traefik.http.routers.nzbget.entrypoints=websecure,web"
       - "traefik.http.routers.nzbget.middlewares=traefik-forward-auth,tls-headers"
-      - "traefik.http.services.nzbget.loadbalancer.server.port=5076"
+      - "traefik.http.services.nzbget.loadbalancer.server.port=6789"
       - "group=mediaserver"
     networks:
       - main
