@@ -84,7 +84,7 @@ services:
       - main
       
   radarr:
-    image: "linuxserver/radarr:4.3.2.6857-ls164"
+    image: "linuxserver/radarr:5.17.2"
     container_name: radarr
     hostname: radarr
     restart: unless-stopped
