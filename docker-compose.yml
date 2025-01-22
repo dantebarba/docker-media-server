@@ -58,7 +58,7 @@ services:
 
 
   sonarr:
-    image: "linuxserver/sonarr:preview-version-3.0.5.1143"
+    image: "linuxserver/sonarr:4.0.12"
     container_name: sonarr
     hostname: sonarr
     restart: unless-stopped
