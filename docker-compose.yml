@@ -216,7 +216,7 @@ services:
       - downloader
 
   overseerr:
-    image: sctx/overseerr:latest
+    image: sctx/overseerr:1.33.2
     container_name: overseerr
     environment:
       - LOG_LEVEL=warning
