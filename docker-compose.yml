@@ -110,7 +110,7 @@ services:
       - "group=mediaserver"
 
   bazarr:
-    image: linuxserver/bazarr:1.4.3
+    image: linuxserver/bazarr:1.5.1
     container_name: bazarr
     environment:
       PUID: ${PUID}
