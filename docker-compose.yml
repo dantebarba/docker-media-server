@@ -57,8 +57,6 @@ services:
       - "group=mediaserver"
     networks:
       - main
-    profiles:
-      - plex
 
   sonarr:
     image: "linuxserver/sonarr:4.0.12"
@@ -255,7 +253,6 @@ services:
     networks:
       - main
     depends_on:
-      - plex
       - sonarr
       - radarr
     profiles:
