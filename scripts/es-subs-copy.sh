@@ -12,7 +12,8 @@ TARGET_DIR=$1
 for movie in "$TARGET_DIR"/*; do
     if [ -d "$movie" ]; then
         for sub in "$movie"/*.es-MX.srt; do
-            es_srt="${sub%.es-mx.srt}.es.srt"
+            # Change this line to ensure correct matching
+            es_srt="${sub%.es-MX.srt}.es.srt"  # Use .es-MX.srt to match the original file
             if cp --no-clobber "$sub" "$es_srt"; then
                 echo "Copied: $sub -> $es_srt"
             else
