@@ -274,7 +274,7 @@ services:
     - "traefik.http.routers.tautulli.tls.certresolver=myresolver"
     - "traefik.docker.network=main"
     - "traefik.http.routers.tautulli.entrypoints=websecure,web"
-    - "traefik.http.routers.tautulli.middlewares=tls-headers"
+    - "traefik.http.routers.tautulli.middlewares=traefik-forward-auth,tls-headers"
     - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
     - "group=mediaserver"
     restart: unless-stopped
