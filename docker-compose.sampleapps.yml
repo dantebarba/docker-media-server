@@ -36,9 +36,9 @@ services:
     container_name: jellyfin
     restart: unless-stopped
     ports:
-      - "8096:8096/tcp"
-      - "8920:8920/tcp"
-      - "7359:7359/udp"
+      - "8097:8096/tcp"
+      - "8921:8920/tcp"
+      - "7360:7359/udp"
     environment:
       - TZ=${DOCKER_TZ}
       - PUID=${PUID}
