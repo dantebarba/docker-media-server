@@ -1,0 +1,68 @@
+version: '3.9'
+services: 
+  emby:
+    image: "emby/embyserver:4.7.10.0"
+    container_name: emby
+    restart: unless-stopped
+    ports:
+      - "8096:8096/tcp"
+      - "8920:8920/tcp"
+      - "7359:7359/udp"
+    environment:
+      - TZ=${DOCKER_TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    hostname: emby
+    volumes:
+      - "${STORAGE_LOCATION}/emby:/config"
+      - "${STORAGE_LOCATION}/emby:/transcode"
+      - ${MEDIA_LOCATION}/samples:/media:ro
+      - /tmp:/tmp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.emby.rule=Host(`emby.${BASE_DOMAIN_URL}`)"
+      - "traefik.http.routers.emby.tls=true"
+      - "traefik.http.routers.emby.tls.certresolver=myresolver"
+      - "traefik.docker.network=main"
+      - "traefik.http.routers.emby.entrypoints=websecure,web"
+      - "traefik.http.routers.emby.middlewares=tls-headers"
+      - "traefik.http.services.emby.loadbalancer.server.port=8096"
+      - "group=mediaserver"
+    networks:
+      - main
+
+  jellyfin:
+    image: "jellyfin/jellyfin:10.8.0"
+    container_name: jellyfin
+    restart: unless-stopped
+    ports:
+      - "8096:8096/tcp"
+      - "8920:8920/tcp"
+      - "7359:7359/udp"
+    environment:
+      - TZ=${DOCKER_TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    hostname: jellyfin
+    volumes:
+      - "${STORAGE_LOCATION}/jellyfin:/config"
+      - "${STORAGE_LOCATION}/jellyfin:/transcode"
+      - ${MEDIA_LOCATION}/samples:/media:ro
+      - /tmp:/tmp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${BASE_DOMAIN_URL}`)"
+      - "traefik.http.routers.jellyfin.tls=true"
+      - "traefik.http.routers.jellyfin.tls.certresolver=myresolver"
+      - "traefik.docker.network=main"
+      - "traefik.http.routers.jellyfin.entrypoints=websecure,web"
+      - "traefik.http.routers.jellyfin.middlewares=tls-headers"
+      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+      - "group=mediaserver"
+    networks:
+      - main
+
+
+networks:
+  main:
+    external: true
