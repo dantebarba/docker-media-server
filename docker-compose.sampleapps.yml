@@ -17,7 +17,6 @@ services:
       - "${STORAGE_LOCATION}/emby:/config"
       - "${STORAGE_LOCATION}/emby:/transcode"
       - ${MEDIA_LOCATION}/samples:/media:ro
-      - /tmp:/tmp
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.emby.rule=Host(`emby.${BASE_DOMAIN_URL}`)"
@@ -48,7 +47,6 @@ services:
       - "${STORAGE_LOCATION}/jellyfin:/config"
       - "${STORAGE_LOCATION}/jellyfin:/transcode"
       - ${MEDIA_LOCATION}/samples:/media:ro
-      - /tmp:/tmp
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${BASE_DOMAIN_URL}`)"
