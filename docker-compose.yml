@@ -167,7 +167,6 @@ services:
       - main
     restart: unless-stopped
     depends_on:
-      - nzbget
       - jackett
     profiles:
       - indexers
