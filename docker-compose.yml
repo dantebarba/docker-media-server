@@ -164,6 +164,38 @@ services:
     profiles:
       - servarr
 
+  lingarr:
+    image: ghcr.io/lingarr-translate/lingarr:1.2.4
+    container_name: lingarr
+    hostname: lingarr
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_URLS=http://+:9876
+      - DB_CONNECTION=sqlite
+      - DB_HANGFIRE_SQLITE_PATH=/app/config/Hangfire.db
+      - MAX_CONCURRENT_JOBS=1
+      - TZ=${DOCKER_TZ}
+    volumes:
+      - ${STORAGE_LOCATION}/lingarr/config:/app/config
+      - ${MEDIA_LOCATION}:/media
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lingarr.rule=Host(`lingarr.${BASE_DOMAIN_URL}`)"
+      - "traefik.http.routers.lingarr.tls=true"
+      - "traefik.http.routers.lingarr.tls.certresolver=myresolver"
+      - "traefik.docker.network=main"
+      - "traefik.http.routers.lingarr.entrypoints=websecure,web"
+      - "traefik.http.routers.lingarr.middlewares=traefik-forward-auth,tls-headers"
+      - "traefik.http.services.lingarr.loadbalancer.server.port=9876"
+      - "group=mediaserver"
+    networks:
+      - main
+    depends_on:
+      - sonarr
+      - radarr
+    profiles:
+      - servarr
+
   nzbhydra2:
     image: ghcr.io/linuxserver/nzbhydra2:4.1.0
     container_name: nzbhydra2
