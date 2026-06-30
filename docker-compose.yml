@@ -175,7 +175,9 @@ services:
       - DB_HANGFIRE_SQLITE_PATH=/app/config/Hangfire.db
       - MAX_CONCURRENT_JOBS=1
       - TZ=${DOCKER_TZ}
-      - SERVICE_TYPE=["deepl","gemini"]
+      # Provider selection is managed in the Lingarr UI (persisted in /app/config),
+      # NOT via SERVICE_TYPE: the 1.2.4 release only accepts a single service, and
+      # the env var is re-applied over the DB on every boot, clobbering UI changes.
       - SOURCE_LANGUAGES=[{"name":"English","code":"en"}]
       - TARGET_LANGUAGES=[{"name":"Spanish","code":"es"}]
       - DEEPL_API_KEY=${LINGARR_DEEPL_API_KEY}
