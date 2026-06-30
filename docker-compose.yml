@@ -180,7 +180,7 @@ services:
       - TARGET_LANGUAGES=[{"name":"Spanish","code":"es"}]
       - DEEPL_API_KEY=${LINGARR_DEEPL_API_KEY}
       - GEMINI_API_KEY=${LINGARR_GEMINI_API_KEY}
-      - GEMINI_MODEL=gemini-2.0-flash
+      - GEMINI_MODEL=gemini-2.5-flash-lite
       - RADARR_URL=http://radarr:7878
       - RADARR_API_KEY=${LINGARR_RADARR_API_KEY}
       - SONARR_URL=http://sonarr:8989
