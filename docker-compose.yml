@@ -175,6 +175,16 @@ services:
       - DB_HANGFIRE_SQLITE_PATH=/app/config/Hangfire.db
       - MAX_CONCURRENT_JOBS=1
       - TZ=${DOCKER_TZ}
+      - SERVICE_TYPE=["deepl","gemini"]
+      - SOURCE_LANGUAGES=[{"name":"English","code":"en"}]
+      - TARGET_LANGUAGES=[{"name":"Spanish","code":"es"}]
+      - DEEPL_API_KEY=${LINGARR_DEEPL_API_KEY}
+      - GEMINI_API_KEY=${LINGARR_GEMINI_API_KEY}
+      - GEMINI_MODEL=gemini-2.0-flash
+      - RADARR_URL=http://radarr:7878
+      - RADARR_API_KEY=${LINGARR_RADARR_API_KEY}
+      - SONARR_URL=http://sonarr:8989
+      - SONARR_API_KEY=${LINGARR_SONARR_API_KEY}
     volumes:
       - ${STORAGE_LOCATION}/lingarr/config:/app/config
       - ${MEDIA_LOCATION}:/media
