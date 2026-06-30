@@ -1,0 +1,5 @@
+--- subx.py.orig
++++ subx.py
+@@
+-_SUBX_BASE_URL = "https://subx-api.duckdns.org"
++_SUBX_BASE_URL = os.environ.get("SUBX_BASE_URL", "https://subx-api.duckdns.org")

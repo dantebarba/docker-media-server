@@ -123,10 +123,12 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${DOCKER_TZ}
+      SUBX_BASE_URL: http://subx-bridge:8787
     restart: unless-stopped
     volumes:
       - ${STORAGE_LOCATION}/bazarr/config:/config
       - ${MEDIA_LOCATION}:/media
+      - ./subx-bridge/bazarr-init/99-patch-subx.sh:/custom-cont-init.d/99-patch-subx.sh:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.rule=Host(`bazarr.${BASE_DOMAIN_URL}`)"
@@ -142,6 +144,23 @@ services:
     depends_on:
       - sonarr
       - radarr
+      - subx-bridge
+    profiles:
+      - servarr
+
+  subx-bridge:
+    build: ./subx-bridge
+    image: subx-bridge:local
+    container_name: subx-bridge
+    restart: unless-stopped
+    environment:
+      SUBX_API_KEYS: ${SUBX_API_KEYS}
+      SUBDIVX_CF_CLEARANCE: ${SUBDIVX_CF_CLEARANCE}
+      SUBDIVX_SDX: ${SUBDIVX_SDX}
+      SUBDIVX_USER_AGENT: ${SUBDIVX_USER_AGENT}
+      LOG_LEVEL: ${SUBX_LOG_LEVEL:-INFO}
+    networks:
+      - main
     profiles:
       - servarr
 
