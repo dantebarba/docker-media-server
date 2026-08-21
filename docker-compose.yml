@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   jackett:
-    image: "linuxserver/jackett:version-v0.22.2200"
+    image: "linuxserver/jackett:version-v0.24.2434"
     container_name: jackett
     hostname: jackett
     restart: unless-stopped
