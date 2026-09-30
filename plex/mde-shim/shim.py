@@ -69,6 +69,15 @@ def should_force_transcode(params, headers):
     return audio is not None and audio.get("codec") in FORCE_AUDIO_CODECS
 
 
+def transcode_query(query):
+    """Turn the app's Direct Play query into the one it sends itself when it asks for a transcode."""
+    query = re.sub(r"(^|&)directPlay=1(?=&|$)", r"\1directPlay=0", query)
+    query = re.sub(r"(^|&)skipSubtitles=[^&]*(?=&|$)", "", query)
+    if not re.search(r"(^|&)subtitles=", query):
+        query += "&subtitles=embedded"
+    return query.lstrip("&")
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
 
@@ -81,8 +90,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             parsed = urllib.parse.urlsplit(self.path)
             params = urllib.parse.parse_qs(parsed.query, keep_blank_values=True)
             if should_force_transcode(params, self.headers):
-                query = re.sub(r"(^|&)directPlay=1(&|$)", r"\1directPlay=0\2", parsed.query)
-                target = urllib.parse.urlunsplit(parsed._replace(query=query))
+                target = urllib.parse.urlunsplit(parsed._replace(query=transcode_query(parsed.query)))
                 self.log_message("forced directPlay=0 for %s", first(params, "path"))
         except Exception as exc:
             self.log_message("lookup failed, passing through: %s", exc)
