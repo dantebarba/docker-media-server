@@ -62,14 +62,15 @@ services:
       - plex
 
   plex-mde-shim:
-    image: "nginx:1.27-alpine"
+    build: ./plex/mde-shim
+    image: plex-mde-shim:local
     container_name: plex-mde-shim
     restart: unless-stopped
-    volumes:
-      - "./plex/mde-shim/nginx.conf:/etc/nginx/conf.d/default.conf:ro"
+    environment:
+      - PLEX_URL=http://plex:32400
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.plex-mde.rule=Host(`plex.${BASE_DOMAIN_URL}`) && PathPrefix(`/video/:/transcode/universal/`)"
+      - "traefik.http.routers.plex-mde.rule=Host(`plex.${BASE_DOMAIN_URL}`) && (PathPrefix(`/video/:/transcode/universal/decision`) || PathPrefix(`/video/:/transcode/universal/start`))"
       - "traefik.http.routers.plex-mde.priority=100"
       - "traefik.http.routers.plex-mde.tls=true"
       - "traefik.http.routers.plex-mde.tls.certresolver=myresolver"
