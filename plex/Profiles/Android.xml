@@ -106,4 +106,13 @@
       </Limitations>
     </VideoAudioCodec>
   </CodecProfiles>
+  <TranscodeTargetProfiles>
+    <VideoTranscodeTarget protocol="hls" context="streaming">
+      <VideoAudioCodec name="aac">
+        <Limitations>
+          <UpperBound name="audio.channels" value="2" />
+        </Limitations>
+      </VideoAudioCodec>
+    </VideoTranscodeTarget>
+  </TranscodeTargetProfiles>
 </Client>
