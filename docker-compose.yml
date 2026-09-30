@@ -43,6 +43,7 @@ services:
     volumes:
       - "${STORAGE_LOCATION}/plex:/config"
       - "${STORAGE_LOCATION}/plex:/transcode"
+      - "./plex/Profiles:/config/Library/Application Support/Plex Media Server/Profiles:ro"
       - ${MEDIA_LOCATION}:/media:ro
       - /tmp:/tmp
     labels:
