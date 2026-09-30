@@ -4,8 +4,7 @@ The Android TV app decides Direct Play on its own for MKVs whose selected audio 
 because it can software-decode DTS, so the server never transcodes the track to EAC3 and
 the Chromecast outputs PCM. When such a request comes in with directPlay=1, this proxy
 rewrites it to directPlay=0 so the server answers with a Direct Stream: video copied,
-audio transcoded per the Android profile. Requests whose selected subtitle is image-based
-are left alone, since a Direct Stream would burn it in and transcode the video.
+audio transcoded per the Android profile.
 """
 import http.server
 import os
@@ -19,7 +18,6 @@ PLEX = os.environ.get("PLEX_URL", "http://plex:32400")
 LISTEN_PORT = int(os.environ.get("LISTEN_PORT", "8080"))
 TARGET_PRODUCT = os.environ.get("TARGET_PRODUCT", "Plex for Android (TV)")
 FORCE_AUDIO_CODECS = set(os.environ.get("FORCE_AUDIO_CODECS", "dca").split(","))
-IMAGE_SUBTITLE_CODECS = {"pgs", "dvd_subtitle", "vobsub", "dvb_subtitle", "hdmv_pgs_subtitle"}
 HOP_HEADERS = {"connection", "keep-alive", "transfer-encoding", "te", "trailer", "upgrade", "proxy-connection", "host"}
 
 
@@ -68,12 +66,7 @@ def should_force_transcode(params, headers):
         return False
     part = parts[part_index]
     audio = selected_stream(part, "2", first(params, "audioStreamID"))
-    subtitle = selected_stream(part, "3", first(params, "subtitleStreamID"))
-    if audio is None or audio.get("codec") not in FORCE_AUDIO_CODECS:
-        return False
-    if subtitle is not None and subtitle.get("codec") in IMAGE_SUBTITLE_CODECS:
-        return False
-    return True
+    return audio is not None and audio.get("codec") in FORCE_AUDIO_CODECS
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
