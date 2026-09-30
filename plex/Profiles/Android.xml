@@ -100,5 +100,10 @@
         <UpperBound name="audio.channels" value="0" />
       </Limitations>
     </VideoAudioCodec>
+    <VideoAudioCodec name="dca">
+      <Limitations>
+        <UpperBound name="audio.channels" value="0" />
+      </Limitations>
+    </VideoAudioCodec>
   </CodecProfiles>
 </Client>
