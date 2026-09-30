@@ -61,6 +61,30 @@ services:
     profiles:
       - plex
 
+  plex-mde-shim:
+    image: "nginx:1.27-alpine"
+    container_name: plex-mde-shim
+    restart: unless-stopped
+    volumes:
+      - "./plex/mde-shim/nginx.conf:/etc/nginx/conf.d/default.conf:ro"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex-mde.rule=Host(`plex.${BASE_DOMAIN_URL}`) && PathPrefix(`/video/:/transcode/universal/`)"
+      - "traefik.http.routers.plex-mde.priority=100"
+      - "traefik.http.routers.plex-mde.tls=true"
+      - "traefik.http.routers.plex-mde.tls.certresolver=myresolver"
+      - "traefik.docker.network=main"
+      - "traefik.http.routers.plex-mde.entrypoints=websecure,web"
+      - "traefik.http.routers.plex-mde.middlewares=tls-headers"
+      - "traefik.http.services.plex-mde.loadbalancer.server.port=8080"
+      - "group=mediaserver"
+    depends_on:
+      - plex
+    networks:
+      - main
+    profiles:
+      - plex
+
   sonarr:
     image: "linuxserver/sonarr:4.0.12"
     container_name: sonarr
